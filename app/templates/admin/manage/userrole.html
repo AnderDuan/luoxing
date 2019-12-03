@@ -1,0 +1,72 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<table id="app" class="layui-table">
+    <ul class="layui-tab-title">
+        <h2>用户权限管理</h2>
+    </ul>
+    <thead>
+        <th>用户账号</th>
+        <th>用户姓名</th>
+        <th>用户密码</th>
+        <th>邮箱</th>
+        <th>注册日期</th>
+        <th>账号状态</th>
+        <th>是否为管理员</th>
+        <th>当前角色</th>
+        <th>分配角色</th>
+        <th>确认</th>
+    </thead>
+    </div>
+    <tr v-for="role in roles">
+        <td>[{role.user_id}]</td>
+        <td>[{role.user_name}]</td>
+        <td>*****</td>
+        <td>[{role.mail}]</td>
+        <td>[{role.regest_date}]</td>
+        <td>[{role.user_status}]</td>
+        <td>[{role.is_manager}]</td>
+        <td>[{role.role_name}]</td>
+        <td><select class="custom-select" v-bind:id="'d'+role.user_id">
+                <option value="1">需求人员</option>
+                <option value="2">审批人员</option>
+                <option value="3">管控人员</option>
+                <option value="4">实施人员</option>
+            </select></td>
+        <td><button v-on:click="role_save(role.user_id);" style="background-color:#1E9FFF;" type="button"
+                class="layui-btn layui-btn-normal" id="LAY-component-form-setval"><i
+                    class="fa fa-check-square"></i>保存</button></td>
+    </tr>
+</table>
+<script>
+    var app = new Vue({
+        delimiters: ['[{', '}]'],
+        el: "#app",
+        data: {
+            roles: []
+        },
+        methods: {
+            role: function () {
+                $.get("/restful/user_control/user_info/user_role/role/", function (data) {
+                    app.roles = data;
+                });
+            },
+            role_save: function (user_id) {
+                var role_id = $("#d" + user_id).val();
+                var data = { 'user_id': user_id, 'role_id': role_id };
+                $.get("/restful/user_control/user_role/?user_id=" + user_id + "&role_id=" + role_id, function (result) {
+                    layui.use('upload', function () {
+                        layer.msg(result, {
+                            time: 20000,
+                            btn: ["知道了"]
+                        });
+                        app.role();
+                    });
+                });
+            }
+        }
+    });
+    $(function () {
+        app.role();
+    });
+</script>
+{% endblock %}

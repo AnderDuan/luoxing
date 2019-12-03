@@ -1,0 +1,443 @@
+{% extends 'index/base.html' %}
+{% block body %}
+
+<!-- breadcrumb start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">数据资源</li>
+        </ol>
+    </div>
+</div>
+<!-- breadcrumb end -->
+<!-- shop-area start -->
+<div class="shop-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-4">
+                <div class="column mt-55">
+                    <h2 class="title-block">分类</h2>
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-title">按系统</h3>
+                        <ul class="sidebar-menu">
+                            {% for item in left_menu_systems %}
+                            <li><a
+                                    href="/resources/?query_type=source_system&tab=home&source_system={{item.source_system}}">
+                                    {{item.source_system}} <span>({{item.cnt}})</span></a></li>
+                            {% endfor %}
+                            <li><a href="/resources/?query_type=source_system&tab=home">
+                                    更多... <span></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-title">按业务</h3>
+                        <ul class="sidebar-menu">
+                            {% for item in left_menu_operation %}
+                            <li><a href="/resources/?query_type=operation&tab=home&lv1={{item.lv_1_operation}}">
+                                    {{item.lv_1_operation}}
+                                    <span>({{item.cnt}})</span></a></li>
+                            {% endfor %}
+
+                            <li><a href="/resources/?query_type=operation&tab=home">更多... <span></span></a></li>
+                        </ul>
+                    </div>
+                    <!-- <div class="sidebar-widget">
+                        <h3 class="sidebar-title">跨系统</h3>
+                        <ul class="sidebar-menu">
+                            <li><a href="/resources/?query_type=source_system&tab=mix&source_system=PMS">
+                                    营配贯通 <span>(43)</span></a></li>
+                        </ul>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-8">
+                <h2 class="page-heading mt-40">
+                    <span class="cat-name">数据资源表——
+                        {% if query_type=='source_system' %}
+                        按系统查询
+                        {% elif query_type=='operation' %}
+                        按业务查询
+                        {% elif query_type=='process' %}
+                        按流程查询
+                        {% endif %}
+                    </span>
+                    <span class="heading-counter">
+                        <ul class="shop-tab f-left" role="tablist" id='myTabs'>
+                            <li role="presentation" class="active">
+                                <a href="#profile" data-toggle="tab" aria-expanded="true">
+                                    <i class="fa fa-th-large" aria-hidden="true"></i></a>
+                            </li>
+                            <!-- <li role="presentation" class="">
+                                <a href="#mix" data-toggle="tab" aria-expanded="false">
+                                    <i class="fa fa-th-large" aria-hidden="true"></i></a>
+                            </li> -->
+                            <li role="presentation" class="">
+                                <a href="#home" data-toggle="tab" aria-expanded="false">
+                                    <i class="fa fa-th-list" aria-hidden="true"></i></a></li>
+                        </ul>
+                    </span>
+                </h2>
+                <div class="shop-page-bar">
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="profile">
+                            <h5>LOGO可以点击哦</h5>
+                            <div id="echarts" style="height: 400px;"></div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="mix">
+                            <h5>LOGO可以点击哦</h5>
+                            <div id="echarts_mix" style="height: 400px;"></div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="home">
+                            <div>
+                                <div class="shop-bar">
+                                    <table class="table" style="border:hidden;">
+                                        {% if query_type=='source_system' %}
+                                        <tr>
+                                            <td>
+                                                <div class="selector-field f-left ml-20">
+                                                    <label>业务系统</label>
+                                                    <select id='source_system' onchange="get_tables_by_system();">
+                                                        {% for item in menu %}
+                                                        {% if item.source_system not in ["PMS2.0系统", "电网GIS平台", "未匹配", "营销GIS", "电网GIS", "营销业务应用系统"] %}
+                                                        <option>{{item.source_system}}</option>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                    <label></label>
+                                                </div>
+                                                <div class="selector-field f-right ml-30">
+                                                    <!-- <button class="compare" onclick="get_tables_by_system();">开始查询</button> -->
+                                                </div>
+                                                <script>
+                                                    function get_tables_by_system() {
+                                                        system = $('#source_system').val();
+                                                        location.href = '/resources/?query_type=source_system&tab=home&source_system=' + system;
+                                                    }
+                                                    $("#source_system").val('{{status.source_system}}');
+                                                </script>
+                                            </td>
+                                        </tr>
+                                        {% elif query_type=='operation' %}
+                                        <tr>
+                                            <td id='menu_operation'>
+                                                <div class="selector-field f-left ml-20 hidden-xs">
+                                                    <label>业务一级</label>
+                                                    <select id='lv1' name="select" v-model="status_lv1"
+                                                        @change="get_lv2_by_lv1()">
+                                                        <option v-for="item in menu.lv1" :value="item">[{item}]</option>
+                                                    </select>
+                                                </div>
+                                                <div class="selector-field f-left ml-20 hidden-xs">
+                                                    <label>业务二级</label>
+                                                    <select id='lv2' name="select" v-model="status_lv2"
+                                                        @change="get_lv3_by_lv2">
+                                                        <option v-for="item in menu.lv2" :value="item">[{item}]</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="selector-field f-left ml-20 hidden-xs">
+                                                    <label>业务三级</label>
+                                                    <select name="select" v-model="status_lv3"
+                                                        @change="get_table_by_operation()">
+                                                        <option disabled>请选择</option>
+                                                        <option v-for="item in menu.lv3">[{item}]</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% elif query_type=='process' %}
+                                        <tr>
+                                            <td id='menu_operation'>
+                                                <div class="selector-field f-left ml-20 hidden-xs">
+                                                    <label>流程</label>
+                                                    <select id='lv1' name="select" v-model="status_lv1"
+                                                        @change="get_lv2_by_lv1()">
+                                                        <option v-for="item in menu.lv1" :value="item">
+                                                            [{item.substr(0,10)}]
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="selector-field f-left ml-20 hidden-xs">
+                                                    <label>环节</label>
+                                                    <select id='lv2' name="select" v-model="status_lv2"
+                                                        @change="get_lv3_by_lv2">
+                                                        <option v-for="item in menu.lv2" :value="item">
+                                                            [{item.substr(0,10)}]
+                                                        </option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="selector-field f-left ml-20 hidden-xs">
+                                                    <label>业务信息载体</label>
+                                                    <select name="select" v-model="status_lv3"
+                                                        @change="get_table_by_operation()">
+                                                        <option disabled>请选择</option>
+                                                        <option v-for="item in menu.lv3">[{item}]</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {% endif %}
+                                    </table>
+                                    <input id='menu' value="{{menu}}" v-model="menu" hidden>
+                                    <script>
+                                        var lv1 = new Vue({
+                                            delimiters: ['[{', '}]'],
+                                            el: '#menu_operation',
+                                            data: {
+                                                menu: JSON.parse(document.getElementById("menu").value),
+                                                status_lv1: "{{status.lv1}}",
+                                                status_lv2: "{{status.lv2}}",
+                                                status_lv3: "{{status.lv3}}"
+                                            },
+                                            methods: {
+                                                get_lv2_by_lv1: function () {
+                                                    var _this = this;
+                                                    $.get("/restful/qyw_tables/menu/{{query_type}}/?lv1=" + this.status_lv1, function (data) {
+                                                        console.log(data);
+                                                        _this.menu.lv2 = data['lv2'];
+                                                        _this.status_lv2 = data['lv2'][0];
+                                                        _this.menu.lv3 = data['lv3'];
+                                                        _this.status_lv3 = '请选择';
+                                                    });
+                                                },
+                                                get_lv3_by_lv2: function () {
+                                                    var _this = this;
+                                                    $.get("/restful/qyw_tables/menu/{{query_type}}/?lv1=" + this.status_lv1 + '&lv2=' + this.status_lv2, function (data) {
+                                                        console.log(data);
+                                                        _this.menu.lv3 = data;
+                                                        _this.status_lv3 = '请选择';
+                                                    });
+                                                },
+                                                get_table_by_operation: function () {
+                                                    location.href = '/resources/?query_type={{query_type}}&tab=home&lv1=' + this.status_lv1 +
+                                                        '&lv2=' + this.status_lv2 + '&lv3=' + this.status_lv3;
+                                                }
+                                            }
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="row">
+                                {% for item in tables %}
+                                <div class="col-lg-4 col-md-4 col-sm-6">
+                                    <div class="single-product mb-30  white-bg">
+                                        <div class="product-img pt-20" style="text-align: center;">
+                                            <a href="/tables/None/None/?id={{item.table_id}}">
+                                                <img src="/static/images/computers2/g{{ range(1,10)|random() }}.png"
+                                                    style="width:80%;height:150px;" />
+                                            </a>
+                                        </div>
+                                        <div class="product-content product-i">
+                                            <div class="pro-title">
+
+                                                <h4>
+                                                    <a href="/tables/None/None/?id={{item.table_id}}"
+                                                        title="{{item.table_name_ch}}">
+                                                        {% if (item.table_name_ch  or "空")|length() > 15 %}
+                                                        {{item.table_name_ch[:15]}}..
+                                                        {% else %}
+                                                        {{item.table_name_ch or "空"}}
+                                                        {% endif %}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div class="pro-rating " title="{{item.process_name}}">
+                                                <span class="glyphicon glyphicon-filter"></span>
+                                                {% if (item.process_name  or "空")|length() > 15 %}
+                                                {{item.process_name[:15]}}..
+                                                {% else %}
+                                                {{item.process_name or "空"}}
+                                                {% endif %}
+                                            </div>
+                                            <div class="pro-rating ">
+                                                <span class="glyphicon glyphicon-filter"></span>
+                                                重要等级：{{item.import_level or '无'}}
+                                            </div>
+                                            <div class="price-box" style="height: 40px;">
+                                                <span title="{{item.table_name}}" class="price product-price">
+                                                    <span class="glyphicon glyphicon-dashboard"></span>
+                                                    {{item.table_name_en[:18]}}
+                                                </span>
+                                            </div>
+
+
+                                            <div class="product-icon">
+                                                <div class="product-icon-left f-left">
+                                                    <a
+                                                        href="/process_table_column/{{item.lv_1_operation}}/{{item.lv_2_operation}}/{{item.lv_3_operation}}/{{item.process_name}}/{{item.link_name}}/{{item.business_info}}/{{item.table_name_en}}/">
+                                                        <i class="fa fa-shopping-cart"></i>查看详情
+                                                    </a>
+                                                </div>
+                                                <div class="product-icon-right floatright">
+                                                    <!-- <a href="/process_table_column/{{item.lv_1_operation}}/{{item.lv_2_operation}}/{{item.lv_3_operation}}/{{item.process_name}}/{{item.link_name}}/{{item.business_info}}/{{item.table_name_en}}/"
+                                                        data-toggle="tooltip" title="重要等级：{{item.import_level or '无'}}">
+                                                        <i class="fa fa-exchange"></i></a> -->
+                                                    <a href="/process_table_column/{{item.lv_1_operation}}/{{item.lv_2_operation}}/{{item.lv_3_operation}}/{{item.process_name}}/{{item.link_name}}/{{item.business_info}}/{{item.table_name_en}}/"
+                                                        data-toggle="tooltip" title="收藏">
+                                                        <i class="fa fa-heart"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="new">资源表</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="content-sortpagibar" style="text-align: center;">
+                                <!-- <div class="product-count display-inline">Showing 1 - 12 of 13 items</div> -->
+                                <ul class="shop-pagi selector-field display-inline">
+                                    <label>请选择页码</label>
+                                    <li><a
+                                            href="/resources/?query_type={{query_type}}&tab=home&source_system={{status.source_system}}&lv1={{status.lv1}}&lv2={{status.lv2}}&lv3={{status.lv3}}&page={{page-1}}">
+                                            <i class="fa fa-angle-left"></i></a>
+                                    </li>
+                                    <li>
+                                        <select id="page" class="selector-field">
+                                            {% for i in range(1,count+1) %}
+                                            <option>{{i}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <script>
+                                            $('#page').val('{{page}}');
+                                            $('#page').change(
+                                                function () {
+                                                    location.href = '/resources/?query_type={{query_type}}&tab=home&source_system={{status.source_system}}&lv1={{status.lv1}}&lv2={{status.lv2}}&lv3={{status.lv3}}&page=' + $('#page').val();
+                                                }
+                                            );
+                                        </script>
+                                    </li>
+                                    <li><a
+                                            href="/resources/?query_type={{query_type}}&tab=home&source_system={{status.source_system}}&lv1={{status.lv1}}&lv2={{status.lv2}}&lv3={{status.lv3}}&page={{page+1}}">
+                                            <i class="fa fa-angle-right"></i></a>
+                                    </li>
+                                    &nbsp;<label> 共{{count}}页</label>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <script>
+                        function isInArray(arr, value) {
+                            for (var i = 0; i < arr.length; i++) {
+                                if (value === arr[i]) {
+                                    return true;
+                                }
+                            }
+                            return false;
+                        }
+                        var myChart = echarts.init(document.getElementById('echarts'));
+                        var myChart_mix = echarts.init(document.getElementById('echarts_mix'));
+                        var mix_array = ["PMS2.0系统", "电网GIS平台", "未匹配", "营销GIS", "电网GIS", "营销业务应用系统"];
+                        myChart.showLoading();
+                        myChart_mix.showLoading();
+                        $.get('/restful/content_tree/system_menu/', function (data) {
+                            document.getElementById("echarts").style.height = '1000px';
+                            document.getElementById("echarts_mix").style.height = '1000px';
+                            // myChart.hideLoading();
+                            data_mix = { children: [], name: "营配贯通" };
+                            data_one = { children: [], name: "数据系统" };
+                            for (i in data.children) {
+                                if (isInArray(mix_array, data.children[i].name)) {
+                                    data_mix.children.push(data.children[i]);
+                                } else {
+                                    data_one.children.push(data.children[i])
+                                }
+                            }
+                            console.log(data);
+                            console.log(data_one);
+                            console.log(data_mix);
+                            option = {
+                                tooltip: {
+                                    trigger: 'item',
+                                    triggerOn: 'mousemove'
+                                },
+                                series: [
+                                    {
+                                        type: 'tree',
+                                        // data: [data],
+                                        color: ['#60acfc'],
+                                        top: '1%',
+                                        left: '10%',
+                                        bottom: '10%',
+                                        right: '20%',
+                                        symbolSize: 30,
+                                        symbol: 'image:///static/images/learn_tools/z11.png',
+                                        label: {
+                                            normal: {
+                                                position: 'left',
+                                                verticalAlign: 'middle',
+                                                align: 'right',
+                                                fontSize: 14
+                                            },
+                                        },
+
+                                        leaves: {
+                                            label: {
+                                                normal: {
+                                                    position: 'right',
+                                                    verticalAlign: 'middle',
+                                                    align: 'left'
+                                                }
+                                            }
+                                        },
+                                        // layout: 'radial',
+                                        initialTreeDepth: 2,
+                                        expandAndCollapse: true,
+                                        animationDuration: 550,
+                                        animationDurationUpdate: 750
+                                    }
+                                ]
+                            }
+                            option_mix = option;
+                            option_one = option;
+
+
+                            console.log(option_one);
+                            console.log(option_mix);
+                            myChart.hideLoading();
+                            myChart.resize();
+                            option_one.series[0].data = [data_one];
+                            myChart.setOption(option_one);
+
+                            myChart_mix.hideLoading();
+                            myChart_mix.resize();
+                            option_mix.series[0].data = [data_mix];
+                            myChart_mix.setOption(option_mix);
+                        });
+                        myChart.on('click', function (params) {
+                            console.log(params);
+                            if (!('children' in params.data)) {
+                                console.log(params)
+                                // window.open(params.data.value)
+                                location.href = '/resources/?query_type=process&tab=home&lv1=' + params.data.value;
+                            }
+                        });
+                        myChart_mix.on('click', function (params) {
+                            console.log(params);
+                            if (!('children' in params.data)) {
+                                console.log(params)
+                                // window.open(params.data.value)
+                                location.href = '/resources/?query_type=process&tab=home&lv1=' + params.data.value;
+                            }
+                        });
+                    </script>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- shop-area end -->
+<script>
+    $("#myTabs a[href='#{{tab}}']").tab('show');
+    $('#cim_menu').css({ "display": "none" });
+</script>
+<style>
+    
+</style>
+{% endblock %}

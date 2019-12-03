@@ -1,0 +1,154 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<div class="layui-row">
+    <div class="layui-col-xs12">
+        <h5>SQL申请管理</h5>
+    </div>
+</div>
+
+<div class="layui-row" id='app'>
+    <div class="layui-col-xs-4">
+        <div class="layui-card">
+            <div class="layui-card-header">待审批列表</div>
+            <div class="layui-card-body">
+                <!-- <form class="layui-form"> -->
+                <table class="layui-table">
+                    <thead>
+                        <th>申请编号</th>
+                        <th>申请日期</th>
+                        <th>申请人</th>
+                        <th>申请人ID</th>
+                        <th>申请使用库</th>
+                        <th>申请使用表</th>
+                        <th>申请状态</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in apply">
+                            <td>[{item.id}]</td>
+                            <td>[{item.apply_time}]</td>
+                            <td>[{item.user_name}]</td>
+                            <td>[{item.user_id}]</td>
+                            <td>[{item.schema_name}]</td>
+                            <td>[{item.table_name}]</td>
+                            <td>
+                                <select class="custom-select mr-xs-1" v-model="item.apply_status"
+                                    @click="select_change(item)">
+                                    <option>待审批</option>
+                                    <option>申请通过</option>
+                                    <option>申请拒绝</option>
+                                </select>
+                            </td>
+                            <td>
+                                <button class="layui-btn layui-btn-normal" @click="allow(item)"><i
+                                        class="fa fa-check-square"></i>审批</button>
+                                <button class="layui-btn layui-btn-danger"
+                                    @click="delete_item(item.id,'application_record')"><i
+                                        class="fa fa-close"></i>删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-xs-4">
+        <div class="layui-card">
+            <div class="layui-card-header">已审批列表</div>
+            <div class="layui-card-body">
+                <!-- <form class="layui-form"> -->
+                <table class="layui-table">
+                    <thead>
+                        <th>申请编号</th>
+                        <th>申请日期</th>
+                        <th>申请人</th>
+                        <th>申请人ID</th>
+                        <th>申请使用库</th>
+                        <th>申请使用表</th>
+                        <th>申请状态</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in done">
+                            <td>[{item.id}]</td>
+                            <td>[{item.apply_time}]</td>
+                            <td>[{item.user_name}]</td>
+                            <td>[{item.user_id}]</td>
+                            <td>[{item.schema_name}]</td>
+                            <td>[{item.table_name}]</td>
+                            <td>
+                                <select class="custom-select mr-xs-1" v-model="item.apply_status"
+                                    @click="select_change(item)">
+                                    <option>待审批</option>
+                                    <option>申请通过</option>
+                                    <option>申请拒绝</option>
+                                </select>
+                            </td>
+                            <td>
+                                <!-- <button class="layui-btn layui-btn-normal" @click="allow(item)">审批</button> -->
+                                <button @click="delete_item(item.id,'application_record')"
+                                    class="layui-btn layui-btn-danger"><i class="fa fa-close"></i>删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- </form> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('upload', function () {
+        var $ = layer = layui.layer;
+        var app = new Vue({
+            delimiters: ['[{', '}]'],
+            el: '#app',
+            data: {
+                apply: [],
+                done: []
+            },
+            methods: {
+                loadData: function () {
+                    var _this = this;
+                    axios.get("/restful/api/application_record/?do=select&where=\"apply_status='待审批'\"").then(function (res) {
+                        _this.apply = res.data;
+                        console.log(res.data);
+                    });
+                    axios.get("/restful/api/application_record/?do=select&where=\"apply_status='申请通过'\"").then(function (res) {
+                        _this.done = res.data;
+                    });
+                },
+                allow: function (item) {
+                    var _this = this;
+                    item.approve_time = new Date().Format("yyyy-MM-dd hh:mm:ss");
+                    console.log(item);
+                    axios.get("/restful/api/application_record/?do=update&data=" + JSON.stringify(item))
+                        .then(function (res) {
+                            console.log(res.data);
+                            _this.loadData();
+                        });
+                },
+                select_change: function (item) {
+                    console.log(item)
+                },
+                init: function () {
+                    this.loadData();
+                },
+                delete_item: function (item, table_name) {
+                    $.get("/restful/api/" + table_name + "/?do=delete&data=" + JSON.stringify({ 'id': item }))
+                        .then(function (res) {
+                            console.log(res.data);
+                            layer.msg('删除成功', {
+                                time: 2000, //20s后自动关闭
+                            });
+                            app.loadData();
+                        });
+                }
+            }
+        });
+        app.init();
+    });
+</script>
+{% endblock %}

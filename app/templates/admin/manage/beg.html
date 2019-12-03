@@ -1,0 +1,124 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<h5>我的申请</h5>
+<div class="layui-collapse" lay-filter="test">
+    <div class="layui-tab" id='app'>
+        <ul class="layui-tab-title">
+            <li id="l1" style="background-color:#888;color:white;" class="layui-this"><i class="layui-icon">&#xe653;</i>
+                API申请</li>
+            <li id="l2" style="background-color:#666;color:white;"><i class="fa fa-calendar"></i> 数据报表申请</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-row">
+                    <div class="layui-col-xs-4">
+                        <div class="layui-card">
+                            <!-- <form class="layui-form"> -->
+                            <table class="layui-table">
+                                <thead>
+                                    <th>ID</th>
+                                    <th>申请人ID</th>
+                                    <th>API_ID</th>
+                                    <th>申请时间</th>
+                                    <th>审批人ID</th>
+                                    <th>审批时间</th>
+                                    <th>申请理由</th>
+                                    <th>申请状态</th>
+                                </thead>
+                                <tr v-for="api in apis">
+                                    <td>[{api.id}]</td>
+                                    <td>[{api.apply_uid}]</td>
+                                    <td>[{api.api_id}]</td>
+                                    <td>[{api.apply_time}]</td>
+                                    <td>[{api.approve_uid}]</td>
+                                    <td>[{api.approve_time}]</td>
+                                    <td>[{api.apply_reason}]</td>
+                                    <td>[{api.status}]</td>
+                                </tr>
+                            </table>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-tab-item" style="overflow-x:scroll;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-row">
+                        <div class="layui-col-xs-4">
+                            <div class="layui-card">
+                                <!-- <form class="layui-form"> -->
+                                <table class="layui-table" border="1" rules="all"
+                                    style="width:1500px;text-align:center;">
+                                    <thead>
+                                        <th>订单编号</th>
+                                        <th>订单时间</th>
+                                        <th>申请人</th>
+                                        <th>审批人</th>
+                                        <th>审批时间</th>
+                                        <th>决策人</th>
+                                        <th>决策时间</th>
+                                        <th>实施人</th>
+                                        <th>实施时间</th>
+                                        <th>订单状态</th>
+                                        <th>申请原因</th>
+                                        <th>申请内容</th>
+                                        <th>申请人姓名</th>
+                                    </thead>
+                                    <tr v-for="order in orders">
+                                        <td>[{order.order_id}]</td>
+                                        <td>[{order.order_time}]</td>
+                                        <td>[{order.user_id}]</td>
+                                        <td>[{order.approve_uid}]</td>
+                                        <td>[{order.approve_time}]</td>
+                                        <td>[{order.distributed_uid}]</td>
+                                        <td>[{order.distributed_time}]</td>
+                                        <td>[{order.act_uid}]</td>
+                                        <td>[{order.act_time}]</td>
+                                        <td>[{order.status}]</td>
+                                        <td>[{order.apply_reason}]</td>
+                                        <td>[{order.apply_content}]</td>
+                                        <td>[{order.applicant}]</td>
+                                    </tr>
+                                </table>
+                                <!-- </form> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            delimiters: ['[{', '}]'],
+            el: "#app",
+            data: {
+                apis: [],
+                orders: []
+            },
+            methods: {
+                api: function () {
+                    $.get("/restful/api/dasset_apply_apis/?do=select", function (data) {
+                        app.apis = data;
+                    });
+                },
+                order: function () {
+                    $.get("/restful/api/dasset_apply_order/?do=select", function (data) {
+                        app.orders = data;
+                    });
+                }
+            }
+        });
+        app.api()
+        app.order()
+
+        $("#l1").click(function () {
+            $("#l1").css({ "background-color": "#888" })
+            $("#l2").css({ "background-color": "#666" })
+        })
+        $("#l2").click(function () {
+            $("#l2").css({ "background-color": "#888" })
+            $("#l1").css({ "background-color": "#666" })
+        })
+    </script>
+    {% endblock %}

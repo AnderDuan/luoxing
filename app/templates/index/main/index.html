@@ -1,0 +1,1301 @@
+{% extends 'index/base.html' %}
+{% block body %}
+
+<!-- mainmenu-area-end -->
+<!-- slider-area-start -->
+<div class="slider-area">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs"></div>
+			<div class="col-lg-6 col-md-6 col-sm-12">
+				<!-- <div class="main-slider">
+					<div class="slider-container">
+						<div id="mainSlider" class="nivoSlider slider-image" style="height: 350px;">
+							<img src="/static/images/YongHong/员工画像.png" style="height: 350px;">
+							<img src="/static/images/YongHong/用电量分析.png" style="height: 350px;">
+						</div>
+					</div>
+				</div> -->
+				<div class="slider-product dotted-style-1 pt-30">
+					<div class="slider-product-active">
+						<div class="together-single-product">
+							<div class="single-product single-product-sidebar white-bg">
+								<div class="product-img product-img-left">
+									<a href="/resources/">
+										<!-- <img src="/static/images/product/6.jpg" alt="" /> -->
+										<span class="glyphicon glyphicon-th-list"
+											style="font-size: 80px;margin-top:30px;margin-left:25px;color:black"></span>
+									</a>
+								</div>
+								<div class="product-content product-content-right">
+									<div class="pro-title">
+										<h4><a href="/resources/">数据资源表</a></h4>
+									</div>
+									<div class="pro-rating ">
+										不同维度的数据资源
+									</div>
+									<div class="price-box">
+										<span class="price product-price">3297张</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/resources/"><i class="fa fa-shopping-cart"></i>查看详情</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="single-product single-product-sidebar white-bg">
+								<div class="product-img product-img-left">
+									<a href="/api/">
+										<!-- <img src="/static/images/product/9.jpg" alt="" /> -->
+										<span class="glyphicon glyphicon-text-background"
+											style="font-size: 80px;margin-top:30px;margin-left:25px;color:black"></span>
+									</a>
+								</div>
+								<div class="product-content product-content-right">
+									<div class="pro-title">
+										<h4><a href="/api/">Data API</a></h4>
+									</div>
+									<div class="pro-rating ">
+										封装好的数据服务
+									</div>
+									<div class="price-box">
+										<span class="price product-price">384个</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/api/"><i class="fa fa-shopping-cart"></i>查看详情</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="together-single-product">
+							<div class="single-product single-product-sidebar white-bg">
+								<div class="product-img product-img-left">
+									<a href="/bi/">
+										<!-- <img src="/static/images/product/9.jpg" alt="" /> -->
+										<span class="glyphicon glyphicon-stats"
+											style="font-size: 80px;margin-top:30px;margin-left:25px;color:black"></span>
+									</a>
+								</div>
+								<div class="product-content product-content-right">
+									<div class="pro-title">
+										<h4><a href="/bi/">BI报表</a></h4>
+									</div>
+									<div class="pro-rating ">
+										可视化数据报表
+									</div>
+									<div class="price-box">
+										<span class="price product-price">18套</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/bi/"><i class="fa fa-shopping-cart"></i>查看详情</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="single-product single-product-sidebar white-bg">
+								<div class="product-img product-img-left">
+									<a href="/sql/">
+										<!-- <img src="/static/images/product/9.jpg" alt="" /> -->
+										<span class="glyphicon glyphicon-stats"
+											style="font-size: 80px;margin-top:30px;margin-left:25px;color:black"></span>
+									</a>
+								</div>
+								<div class="product-content product-content-right">
+									<div class="pro-title">
+										<h4><a href="/sql/">SQL</a></h4>
+									</div>
+									<div class="pro-rating ">
+										常用SQL一览
+									</div>
+									<div class="price-box">
+										<span class="price product-price">18套</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/sql/"><i class="fa fa-shopping-cart"></i>查看详情</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				<div class="slider-sidebar">
+					<!-- <div class="slider-single-img mb-20" style="text-align: center;">
+						<a href="#">
+							<div id="echarts_view" style="height: 150px;"></div>
+						</a>
+					</div> -->
+					<hr>
+					<div class="slider-single-img none-sm" style="height: 400px;">
+						<a href="#">
+							<!-- <img class="img_a" src="/static/images/YongHong/线损分析.png"
+									style="height: 350px;width:100%;" />
+								<img class="img_b" src="/static/images/YongHong/线损分析.png"
+									style="height: 350px;width:100%;" /> -->
+							<div id="echarts_update" style="height: 350px;"></div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- slider-area-end -->
+<!-- 数据地图展示区 -->
+<div class="electronic-tab-area pt-60 pb-60">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<div class="tab-title">
+					<h2>数据地图</h2>
+				</div>
+				<div class="tab-menu">
+					<ul>
+						<li class="active">
+							<a href="#home" data-toggle="tab">
+								<img src="/static/images/electronic/1.png" alt="" />数据地图展示
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="tab-content tab-content-item">
+			<div class="tab-pane active">
+				<div class="row">
+					<div id="map" style="height: 500px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- CIM模型展示区 -->
+<div class="electronic-tab-area pt-60 pb-60">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+				<div class="tab-title">
+					<h2>CIM模型</h2>
+				</div>
+				<div class="tab-menu">
+					<ul>
+						<li class="active">
+							<a href="#home" data-toggle="tab">
+								<img src="/static/images/electronic/1.png" alt="" />一级主题域CIM
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="tab-content tab-content-item">
+			<div class="tab-pane active" id="home">
+				<div class="row">
+					<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 pad">
+						<div class="single-tab-img  white-bg">
+							<div style="padding: 22px;">
+								<h4 style="line-height: 27px;">
+									<blockquote>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;国家电网公司企业信息模型（SG-CIM）
+										使用面向对象的建模技术定义、
+										统一建模语言进行表达，
+										目标是对公司全业务范围内业务对象进行抽象从而以信息模型的形式进行描述。</blockquote>
+								</h4>
+							</div>
+							<!-- <img src="/static/images/gds/icons.jpg" /> -->
+							<!-- <img src="/static/images/vscode/Hundreds-of-Extensions.png" /> -->
+							<!-- <div id='echarts_themes_graph' style="height: 630px;"></div> -->
+							<div id="echarts_themes_pie" style="height: 375px">
+							</div>
+							<!-- <div class="price-box" style="margin-left: 30px;">
+								<span class="price product-price">10大主题模型</span>
+							</div>
+							<div class="pro-rating" style="margin-left: 30px;">
+								<a href="#">73个二级主题</a>
+							</div> -->
+						</div>
+					</div>
+					<!-- <div class="col-lg-4 col-md-4 col-sm-6  col-xs-12 pad">
+						<div class="single-product pt-30 pb-20 white-bg">
+							<div class="product-img pb-40">
+								<div id="echarts_themes_pie" style="height: 357px;margin:30px;margin-bottom: 0px;">
+								</div>
+							</div>
+							<div class="product-content">
+								<div class="pro-title">
+									<h4><a href="#">CIM主题分布</a></h4>
+								</div>
+
+								<div class="price-box">
+									<span class="price product-price">10大主题模型</span>
+								</div>
+								<div class="pro-rating ">
+									<a href="#">73个二级主题</a>
+								</div>
+								<div class="product-icon">
+									<div class="product-icon-left f-left">
+										<a href="/cim/"><i class="fa fa-shopping-cart"></i>查看详情</a>
+									</div>
+									<div class="product-icon-right floatright">
+										<a href="/cim/" data-toggle="tooltip" title="Compare"><i
+												class="fa fa-exchange"></i></a>
+										<a href="/cim/" data-toggle="tooltip" title="Wishlist"><i
+												class="fa fa-heart"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div> -->
+					<div class="col-lg-8 col-md-8 col-sm-6 col-xs-12 padd-2 dotted-style-1">
+						<div class="new-product-active">
+							<div class="together-single-product">
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img" style="text-align: center;">
+										<a href="/cim/?id=1" style="text-align: center;"><img
+												src="/static/images/power/f1.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" /></a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=1">客户域 Customer</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">1280张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=1"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=1" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=1" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+									<span class="new">CST</span>
+								</div>
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=2">
+											<img src="/static/images/power/f2.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=2">资产域 Asset</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">679张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=2"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=2" data-toggle="tooltip" title="添加比较">
+													<i class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=2" data-toggle="tooltip" title="添加收藏">
+													<i class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="together-single-product">
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=3">
+											<img src="/static/images/power/f3.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=3">财务域 Finance</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">321张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=3"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=3" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=3" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+									<span class="new">FIN</span>
+								</div>
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=4">
+											<img src="/static/images/power/f4.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=4">电网域 Grid</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">146张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=4"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=4" data-toggle="tooltip" title="添加比较">
+													<i class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=4" data-toggle="tooltip" title="添加收藏">
+													<i class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="together-single-product">
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=5"><img src="/static/images/power/f5.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" /></a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="#">人员域 HR</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">106张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=5"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=5" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=5" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+									<span class="sale">HR</span>
+								</div>
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=6"><img src="/static/images/power/f6.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" /></a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=6">综合域 Integration</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">401张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=6"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=6" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=6" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="together-single-product">
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=7">
+											<img src="/static/images/power/f1.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=7">物资域 Material</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">754张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=7"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=7" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=7" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+									<span class="sale">MAT</span>
+								</div>
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=8">
+											<img src="/static/images/power/f2.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=8">市场域 Market</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">106张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=8"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=8" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=8" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="together-single-product">
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=9">
+											<img src="/static/images/power/f9.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=9">项目域 Project</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">1144张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=9"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=9" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=9" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+									<span class="sale">PRJ</span>
+								</div>
+								<div class="single-product white-bg">
+									<div class="product-img product-container-img">
+										<a href="/cim/?id=10">
+											<img src="/static/images/power/f7.png"
+												style="height: 110px;width:110px;margin:32px;margin-bottom: 20px;" />
+										</a>
+									</div>
+									<div class="product-content product-i">
+										<div class="pro-title">
+											<h4><a href="/cim/?id=10">安全域 Safety</a></h4>
+										</div>
+										<div class="pro-rating ">
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+											<a href="#"><i class="fa fa-star-o"></i></a>
+										</div>
+										<div class="price-box">
+											<span class="price product-price">163张主题表</span>
+										</div>
+										<div class="product-icon">
+											<div class="product-icon-left f-left">
+												<a href="/cim/?id=10"><i class="fa fa-shopping-cart"></i>查看详情</a>
+											</div>
+											<div class="product-icon-right floatright">
+												<a href="/cim/?id=10" data-toggle="tooltip" title="添加比较"><i
+														class="fa fa-exchange"></i></a>
+												<a href="/cim/?id=10" data-toggle="tooltip" title="添加收藏"><i
+														class="fa fa-heart"></i></a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- electronic-tab-area-end -->
+
+<!-- API　BI　SQL展示区 -->
+<div class="all-product-area pb-60">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				<!-- bestseller-area -->
+				<div class="bestseller-area dotted-style-2">
+					<div class="section-title">
+						<h3>Data API</h3>
+					</div>
+					<div class="single-product-items-active border-1">
+						<div class="single-product-items">
+							{% for item in apis[0:4] %}
+							<div class="single-product single-product-sidebar white-bg">
+								<div class="product-img product-img-left">
+									<a href="/api_detail/?id={{item.id}}"><img
+											src="/static/images/notebooks2/d{{loop.index}}.png" alt="" /></a>
+								</div>
+								<div class="product-content product-content-right">
+									<div class="pro-title">
+										<h4><a href="/api_detail/?id={{item.id}}">{{item.api_name}}</a>
+										</h4>
+									</div>
+									<div class="pro-rating ">
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star-o"></i></a>
+									</div>
+									<div class="price-box">
+										<span class="price product-price">{{item.type}}</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/api_detail/?id={{item.id}}"><i
+													class="fa fa-shopping-cart"></i>添加申请</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						<div class="single-product-items">
+							{% for item in apis[5:10] %}
+							<div class="single-product single-product-sidebar white-bg">
+								<div class="product-img product-img-left">
+									<a href="/api/"><img src="/static/images/notebooks2/d{{loop.index+4}}.png"
+											alt="" /></a>
+								</div>
+								<div class="product-content product-content-right">
+									<div class="pro-title">
+										<h4><a href="/api_detail/?id={{item.id}}">{{item.api_name}}</a>
+										</h4>
+									</div>
+									<div class="pro-rating ">
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star-o"></i></a>
+									</div>
+									<div class="price-box">
+										<span class="price product-price">{{item.type}}</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/api_detail/?id={{item.id}}"><i
+													class="fa fa-shopping-cart"></i>添加申请</a>
+										</div>
+									</div>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+				<!-- new-product-area -->
+				<div class="new-product-area dotted-style-2">
+					<div class="section-title">
+						<h3>BI报表</h3>
+					</div>
+					<div class="new-product-active border-1">
+						{% for a in range(5) %}
+						<div class="new-product-items">
+							{% for j in tables[2*a:2+a*2] %}
+							<div class="single-product  white-bg">
+								<div class="product-img pt-20" style="text-align: center;">
+									<a href="/bi/">
+										<img src="/static/images/black_folders2/n{{loop.index+a%5}}.png"
+											style="transform:scale(0.7);" /></a>
+								</div>
+								<div class="product-content product-i">
+									<div class="pro-title">
+										<h4><a href="/bi/">{{j.report_desc}}</a></h4>
+									</div>
+									<div class="pro-rating ">
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star"></i></a>
+										<a href="#"><i class="fa fa-star-o"></i></a>
+									</div>
+									<div class="price-box">
+										<span class="price product-price">{{j.major}}</span>
+									</div>
+									<div class="product-icon">
+										<div class="product-icon-left f-left">
+											<a href="/bi/"><i class="fa fa-exchange"></i>查看详情</a>
+										</div>
+										<div class="product-icon-right floatright">
+											<a href="javascript:void(0)" data-toggle="tooltip" title="点赞支持"><i
+													class="fa fa-heart" onclick="alert('感谢支持')"></i></a>
+										</div>
+									</div>
+								</div>
+								<span class="new">BI</span>
+							</div>
+							{% endfor %}
+						</div>
+						{% endfor %}
+					</div>
+					<!-- banner-area-start -->
+				</div>
+				<!-- feature-product-area -->
+
+
+				<div class="banner-area ptb-40">
+					<div class="slider-single-img res">
+						<a href="#">
+							<img class="img_a" src="/static/images/yuanyao/slide2.png" alt="" />
+							<img class="img_b" src="/static/images/yuanyao/slide2.png" alt="" />
+						</a>
+					</div>
+				</div>
+				<div class="feature-product-area dotted-style-2">
+					<div class="section-title">
+						<h3>经典常用SQL</h3>
+					</div>
+					<div class="feature-product-active border-1" id="index_show_sql">
+						{% for item in sqls %}
+						<div class="single-product  white-bg">
+							<div class="product-img pt-20" style="text-align: center;">
+								<a href="/sql/">
+									<img src="/static/images/graph_table/e{{range(1,13)|random()}}.png"
+										style="transform: scale(0.7);" /></a>
+							</div>
+							<div class="product-content product-i">
+								<div class="pro-title">
+									<h4><a href="#"></a></h4>
+								</div>
+								<div class="pro-rating ">
+									<a href="#"><i class="fa fa-star"></i></a>
+									<a href="#"><i class="fa fa-star"></i></a>
+									<a href="#"><i class="fa fa-star"></i></a>
+									<a href="#"><i class="fa fa-star"></i></a>
+									<a href="#"><i class="fa fa-star-o"></i></a>
+								</div>
+								<div class="price-box">
+									<span class="price product-price">{{item.theme_name}}</span>
+								</div>
+								<div class="product-icon">
+									<div class="product-icon-left f-left">
+										<a href="/sql/"><i class="fa fa-exchange"></i>{{item.business_system}}</a>
+									</div>
+									<div class="product-icon-right floatright">
+										<a href="javascript:void(0)" data-toggle="tooltip" title="点赞支持">
+											<i class="fa fa-heart" onclick="alert('感谢支持')"></i></a>
+									</div>
+								</div>
+							</div>
+							<span class=" new">SQL</span>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function init_echarts_themes_graph() {
+		var myChart = echarts.init(document.getElementById('echarts_themes_graph'));
+		$.get('/restful/assets_contents/', function (xml) {
+			// myChart.hideLoading();
+			graph = xml;
+			option = {
+				tooltip: {},
+				animation: false,
+				series: [
+					{
+						type: 'graph',
+						// layout: 'none',
+						layout: 'force',
+						draggable: true,
+						data: graph.nodes,
+						links: graph.links,
+						roam: true,
+						symbol: 'circle',
+						symbolSize: 75,
+						focusNodeAdjacency: true,
+						itemStyle: {
+							normal: {
+								borderColor: '#fff',
+								borderWidth: 1,
+								shadowBlur: 10,
+								shadowColor: 'rgba(0, 0, 0, 0.3)',
+							}
+						},
+						lineStyle: {
+							color: 'source',
+							curveness: 0.5
+						},
+						emphasis: {
+							lineStyle: {
+								color: 'source',
+								width: 10
+							}
+						},
+						force: {
+							repulsion: 10
+						}
+					}
+				]
+			};
+			myChart.setOption(option);
+		});
+		myChart.on('click', function (params) {
+			location.href = "/cim/?cim_id_lv1=" + params.data.x;
+			console.log(params);
+		});
+	}
+
+	function init_echarts_update() {
+		var myChart = echarts.init(document.getElementById('echarts_update'));
+		option = {
+			title: { 'text': "数据更新" },
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+				},
+				formatter: function (params) {
+					var tar = params[1];
+					return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				top: '10%',
+				containLabel: true
+			},
+			yAxis: {
+				type: 'category',
+				splitLine: { show: false },
+				data: ['总量', '2019-03', '2019-04', '2019-05', '2019-06', '2019-07'],
+
+			},
+			xAxis: {
+				type: 'value',
+				axisLabel: {
+					show: false
+				}
+			},
+			series: [
+				{
+					name: '辅助',
+					type: 'bar',
+					stack: '总量',
+					itemStyle: {
+						normal: {
+							barBorderColor: 'rgba(0,0,0,0)',
+							color: 'rgba(0,0,0,0)'
+						},
+						emphasis: {
+							barBorderColor: 'rgba(0,0,0,0)',
+							color: 'rgba(0,0,0,0)'
+						}
+					},
+					data: [0, 1700, 1400, 1200, 300, 0]
+				},
+				{
+					name: '数据量',
+					type: 'bar',
+					stack: '总量',
+					label: {
+						normal: {
+							show: true,
+							position: 'inside',
+						}
+					},
+					itemStyle: {
+						color: '#5bc49f'
+					},
+					data: [7133, 3200, 900, 600, 1700, 733]
+				}
+			]
+		};
+		myChart.setOption(option);
+	}
+
+	function init_echarts_themes_pie() {
+		var myChart = echarts.init(document.getElementById('echarts_themes_pie'));
+		var data = [];
+
+		data = [
+			{ name: "客户域", value: 1280 },
+			{ name: "资产域", value: 679 },
+			{ name: "财务域", value: 321 },
+			{ name: "电网域", value: 146 },
+			{ name: "人员域", value: 106 },
+			{ name: "综合域", value: 401 },
+			{ name: "物资域", value: 754 },
+			{ name: "市场域", value: 106 },
+			{ name: "项目域", value: 1144 },
+			{ name: "安全域", value: 163 }
+		]
+		option = {
+			title: {
+				text: "10大主题模型",
+				subtext: "73个二级主题"
+			},
+			grid: {
+				left: "20%",
+				right: "20%"
+			},
+			// legend: {
+			//     orient: 'horizontal',
+			//     x: 'left',
+			//     data: ['客户域', '资产域', '财务域', '电网域', '人员域', '综合域', '物资域', '市场域', '项目域', '安全域']
+			// },
+			color: ['#60acfc', '#32d3eb', '#5bc49f', '#feb64d', '#ff7c7c', '#9287e7'],
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b}:{c}({d}%)"
+			},
+			series: [{
+				name: '数据资产分布',
+				type: 'pie',
+				radius: ['40%', '70%'],
+				avoidLabelOverlap: false,
+				label: {
+					normal: {
+						show: false,
+						position: 'center'
+					},
+					emphasis: {
+						show: true,
+						textStyle: {
+							fontSize: '30',
+							fontWeight: "bold"
+						},
+						// position: 'center'
+					}
+				},
+				data: data,
+			}],
+		};
+		myChart.setOption(option);
+	}
+
+	function init_echarts_view() {
+		var myChart = echarts.init(document.getElementById('echarts_view'));
+		function getVirtulData(year) {
+			year = year || '2019';
+			var date = +echarts.number.parseDate(year + '-01-01');
+			var end = +echarts.number.parseDate((+year + 1) + '-01-01');
+			var dayTime = 3600 * 24 * 1000;
+			var data = [];
+			for (var time = date; time < end; time += dayTime) {
+				data.push([
+					echarts.format.formatTime('yyyy-MM-dd', time),
+					Math.floor(Math.random() * 800 + 100)
+				]);
+			}
+			console.log(data[data.length - 1]);
+			return data;
+		}
+		option = {
+			title: { text: '每日访问情况' },
+			tooltip: {
+				position: 'top'
+			},
+			calendar: [{
+				orient: 'vertical',
+				// yearLabel: {
+				// 	margin: 0
+				// },
+				monthLabel: {
+					margin: 10
+				},
+				cellSize: 18,
+				left: 100,
+				range: (new Date()).Format("yyyy-MM")
+			}],
+			series: [{
+				type: 'effectScatter',
+				coordinateSystem: 'calendar',
+				calendarIndex: 0,
+				itemStyle: {
+					color: '#feb64d'
+				},
+				symbolSize: function (val) {
+					return val[1] / 200;
+				},
+				data: getVirtulData(Date().year)
+			}]
+		};
+		myChart.setOption(option);
+	}
+	function is_in_nodes(name, nodes) {
+		for (i in nodes) {
+			if (nodes[i].name == name) {
+				return true;
+			}
+		}
+		return false;
+	}
+	var all;
+	function init_echarts_map() {
+		var myChart = echarts.init(document.getElementById('map'));
+		myChart.showLoading();
+		$.get('/restful/map/all/', function (xml) {
+
+			console.log(xml);
+			var data = xml;
+			all = data;
+			var nodes = [];
+			var links = [];
+			nodes.push({
+				name: '贴源区业务系统',
+				x: 250,
+				y: 250,
+				symbolSize: 70,
+				label: {
+					show: true,
+					position: 'inside',
+					fontSize: 18,
+				},
+				itemStyle: {
+					color: 'blue',
+				},
+				symbol: 'image:///static/images/table_icons/blood_table.png',
+				z: 10
+			});
+
+			x = 250; y = 250;
+			for (var i in data.systems) {
+				var node = {
+					name: i,
+					x: Math.random() * x + 20,
+					y: Math.random() * y + 20,
+					symbolSize: 20,
+					label: {
+						show: true,
+						position: 'bottom'
+					},
+					symbol: 'image:///static/images/table_icons/main_table.png',
+					itemStyle: {
+						color: "#60acfc"
+					}
+				};
+
+				var link = {
+					source: '贴源区业务系统',
+					target: i,
+					lineStyle: {
+						width: 2
+					}
+				}
+				nodes.push(node);
+				links.push(link);
+
+				// 显示每个系统的五个数据表
+				for (var j in data.systems[i]) {
+					var item = data.systems[i][j];
+					nodes.push({
+						name: i + "/" + item.table_name,
+						x: node.x + Math.random() * 10 - 20,
+						y: node.y + Math.random() * 10 - 20,
+						symbolSize: 15,
+						symbol: 'image:///static/images/table_icons/main_column.png',
+						itemStyle: {
+							color: "#5bc49f"
+						}
+					});
+					links.push({
+						source: node.name,
+						target: i + "/" + item.table_name,
+						lineStyle: {
+							curveness: 0.3
+						}
+					});
+				}
+
+				for (var k = 0; k < 5; k++) {
+					if (data.systems[i].length > 0) {
+						// console.log('teset', data.systems[i]);
+						links.push({
+							target: i + "/" + data.systems[i][parseInt(Math.random() * data.systems[i].length)].table_name,
+							source: i + "/" + data.systems[i][parseInt(Math.random() * data.systems[i].length)].table_name
+						});
+					}
+				}
+
+			}
+
+			nodes.push({
+				name: 'CIM',
+				x: 250,
+				y: 250,
+				symbolSize: 70,
+				label: {
+					show: true,
+					position: 'inside',
+					fontSize: 18,
+				},
+				itemStyle: {
+					color: 'black',
+				},
+				symbol: 'image:///static/images/table_icons/blood_table.png',
+				z: 10
+			});
+
+			for (var i in data.cim) {
+				var node = {
+					name: i,
+					symbol: 'image:///static/images/table_icons/main_table.png',
+					symbolSize: 35,
+					itemStyle: {
+						color: "#5bc49f"
+					},
+					label: {
+						show: true,
+						position: 'bottom',
+						fontSize: 14
+					}
+				};
+				links.push({
+					source: "CIM",
+					target: i,
+					lineStyle: {
+						width: 3
+					}
+				});
+				nodes.push(node);
+				for (var j in data.cim[i]) {
+					nodes.push({
+						name: i + "/" + j,
+						symbol: 'image:///static/images/table_icons/connection_table.png',
+						symbolSize: 20,
+						itemStyle: {
+							color: "#5bc49f"
+						},
+						label: {
+							position: 'bottom',
+							// show: true
+						}
+					});
+					links.push({
+						source: i,
+						target: i + "/" + j,
+						lineStyle: {
+							width: 2
+						}
+					});
+					// 最终数据表
+					for (var k in data.cim[i][j]) {
+						var item = data.cim[i][j][k];
+						nodes.push({
+							name: i + "/" + j + "/" + item.table_name,
+							symbolSize: 15,
+							itemStyle: {
+								color: '#5bc49f'
+							},
+							symbol: 'image:///static/images/table_icons/connection_column.png'
+						});
+						links.push({
+							target: i + "/" + j,
+							source: i + "/" + j + "/" + item.table_name,
+							lineStyle: {
+								curveness: 0.3,
+							}
+						});
+					}
+					for (var k = 0; k < 5; k++) {
+						var item = data.cim[i][j]
+						if (item.length > 0) {
+							// console.log('cims', data.systems[i]);
+							links.push({
+								target: item[parseInt(Math.random() * item.length)].table_name,
+								source: item[parseInt(Math.random() * item.length)].table_name
+							});
+						}
+					}
+
+				}
+			}
+
+
+			for (var i in data.connections) {
+				var item = data.connections[i];
+				links.push({
+					source: item.source_schema_name,
+					target: item.target_model_name
+				});
+			}
+			// console.log('nodes', nodes);
+			// console.log('links', links);
+			option = {
+				// tooltip: {},
+				// animationDuration: 1500,
+				// animationEasingUpdate: 'quinticInOut',
+				title: {
+					// text: '数据地图'
+				},
+				grid: {
+					left: '20%',
+					top: '20%'
+				},
+				animation: false,
+				series: [
+					{
+						type: 'graph',
+						// layout: 'none',
+						layout: 'force',
+						// layout: 'circular',
+						// edgeSymbol: ['pin', 'arrow'],
+						data: nodes,
+						links: links,
+						roam: true,
+						focusNodeAdjacency: true,
+						// itemStyle: {
+						// 	normal: {
+						// 		borderColor: '#fff',
+						// 		borderWidth: 1,
+						// 		shadowBlur: 10,
+						// 		shadowColor: 'rgba(0, 0, 0, 0.3)'
+						// 	}
+						// },
+						label: {
+							// show: false,
+							position: 'right',
+							formatter: '{b}'
+						},
+						lineStyle: {
+							color: 'source',
+							width: 1,
+							curveness: 0.3,
+							opacity: 1,
+							// curveness: 0
+						},
+						emphasis: {
+							lineStyle: {
+								color: 'source',
+								width: 5,
+								opacity: 0.5
+							}
+						}
+					}
+				]
+			};
+
+			myChart.hideLoading();
+			myChart.setOption(option);
+			myChart.on('click', function (params) {
+				console.log(params)
+			});
+		});
+	}
+
+	// init_echarts_themes_graph();
+	init_echarts_update();
+	init_echarts_themes_pie();
+	// init_echarts_view();
+	init_echarts_map();
+	$('#cim_menu').css({ "display": "block" });
+</script>
+
+{% endblock %}

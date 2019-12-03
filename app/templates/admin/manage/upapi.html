@@ -1,0 +1,60 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<h5>报表上传</h5>
+<form class="layui-form" action="">
+    <i style="margin-top:5px;" class="layui-icon">&#xe612;</i><input type="text" name="original_apply_uid"
+        lay-verify="required" placeholder="原始申请人的id" autocomplete="off" class="layui-input">
+    <i style="margin-top:54px;" class="layui-icon">&#xe66f;</i><input type="text" name="create_uid"
+        lay-verify="required" placeholder="创建人的id" autocomplete="off" class="layui-input">
+    <i style="margin-top:103px;" class="layui-icon">&#xe63c;</i><input type="text" name="order_id" lay-verify="required"
+        placeholder="订单ID" autocomplete="off" class="layui-input">
+    <i style="margin-top:153px;" class="layui-icon">&#xe637;</i><input type="date" name="create_time"
+        lay-verify="required" placeholder="请输入日期" autocomplete="off" class="layui-input">
+    <i style="margin-top:200px;" class="layui-icon">&#xe64d;</i><input type="text" name="url" lay-verify="required"
+        placeholder="API 的创建URL" autocomplete="off" class="layui-input">
+    <i style="margin-top:250px;" class="layui-icon">&#xe6b2;</i><input type="text" name="sql" lay-verify="required"
+        placeholder="SQL语句" autocomplete="off" class="layui-input">
+    <i style="margin-top:300px;" class="layui-icon">&#xe611;</i><input type="text" name="notes" lay-verify="required"
+        placeholder="API的说明" autocomplete="off" class="layui-input">
+    <i style="margin-top:350px;" class="fa fa-font"></i><input type="text" name="api_name" lay-verify="required"
+        placeholder="API的英文名" autocomplete="off" class="layui-input">
+    <i style="margin-top:400px;" class="fa fa-header"></i><input type="text" name="api_name_desc" lay-verify="required"
+        placeholder="API的中文名" autocomplete="off" class="layui-input">
+    <button type="button" class="layui-btn layui-btn-normal" id="test9"><i class="fa fa-paper-plane"></i>开始上传</button>
+</form>
+<script>
+    $("form").eq(0).css({ "width": "400px", "height": "520px", "margin-left": "400px" });
+    $("form>input").css({ "width": "250px", "float": "left", "margin": "10px 0 0 30px", "border": "1px solid #1e1e1e" });
+    $("form>button").css({ "position": "absolute", "margin": "450px 0 0 -200px" })
+    $("form>i").css({ "position": "absolute", "font-size": "25px", "color": "#666", "display": "block", "margin-left": "-10px" })
+
+
+    $("form>button").last().click(function () {
+        var original_apply_uid = $("form>input").eq(0).val();
+        var create_uid = $("form>input").eq(1).val();
+        var order_id = $("form>input").eq(2).val();
+        var create_time = $("form>input").eq(3).val();
+        var url = $("form>input").eq(4).val();
+        var sql = $("form>input").eq(5).val();
+        var notes = $("form>input").eq(6).val();
+        var api_name = $("form>input").eq(7).val();
+        var api_name_desc = $("form>input").eq(8).val();
+        var data = {
+            'original_apply_uid': original_apply_uid, 'create_uid': create_uid,
+            'order_id': order_id, 'create_time': create_time, 'url': url,
+            'sql': sql, 'notes': notes, 'api_name': api_name, 'api_name_desc': api_name_desc
+        }
+
+        $.get("/restful/api/dasset_apis/?do=insert&data=" + JSON.stringify(data), function (result) {
+            layui.use('upload', function () {
+                layer.msg(result, {
+                    time: 20000,
+                    btn: ["知道了"]
+                });
+                app.role();
+            });
+        })
+    })
+
+</script>
+{% endblock %}

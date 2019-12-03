@@ -1,0 +1,191 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<h5>审批流程</h5>
+<div class="layui-tab" id='app'>
+    <ul class="layui-tab-title">
+        <li id="l2" style="background-color:#666;color:white;">
+            <i class="fa fa-calendar"></i> 数据使用申请审批流程
+        </li>
+        <li id="l1" style="background-color:#888;color:white;" class="layui-this">
+            <i class="layui-icon">&#xe653;</i>API使用审批流程
+        </li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show" style="overflow-x:scroll;">
+            <div class="layui-tab-item layui-show">
+                <div class="layui-row">
+                    <div class="layui-col-xs-4">
+                        <div class="layui-card">
+                            <!-- <form class="layui-form"> -->
+                            <table class="layui-table" rules="all" style="width:1500px;text-align:center">
+                                <thead>
+                                    <th>订单编号</th>
+                                    <th>订单时间</th>
+                                    <th>申请人</th>
+                                    <th>审批人</th>
+                                    <th>审批时间</th>
+                                    <th>决策人</th>
+                                    <th>决策时间</th>
+                                    <th>实施人</th>
+                                    <th>实施时间</th>
+                                    <th>订单状态</th>
+                                    <th>申请原因</th>
+                                    <th>申请内容</th>
+                                    <th>申请人姓名</th>
+                                    <th>修改订单状态</th>
+                                    <th>保存</th>
+                                </thead>
+                                <tbody></tbody>
+                                <tr v-for="order in orders">
+                                    <td>[{order.order_id}]</td>
+                                    <td>[{order.order_time}]</td>
+                                    <td>[{order.user_id}]</td>
+                                    <td>[{order.approve_uid}]</td>
+                                    <td>[{order.approve_time}]</td>
+                                    <td>[{order.distributed_uid}]</td>
+                                    <td>[{order.distributed_time}]</td>
+                                    <td>[{order.act_uid}]</td>
+                                    <td>[{order.act_time}]</td>
+                                    <td>[{order.status}]</td>
+                                    <td>[{order.apply_reason}]</td>
+                                    <td>[{order.apply_content}]</td>
+                                    <td>[{order.applicant}]</td>
+                                    <td><select class="custom-select" v-bind:id="'a'+order.order_id">
+                                            <option value="000">000:未提交</option>
+                                            <option value="100">100:提交待审核</option>
+                                            <option value="101">101:已提交被拒绝</option>
+                                            <option value="200">200:审核通过待分配</option>
+                                            <option value="201">201:审核通过无人无开发</option>
+                                            <option value="300">300:审核通过已分配</option>
+                                            <option value="400">400:分配成功正在开发</option>
+                                            <option value="500">500:开发完成</option>
+                                        </select>
+                                    </td>
+                                    <td><button v-on:click="dataupdate(order.order_id)"
+                                            style="background-color:#1E9FFF;" type="button"
+                                            class="layui-btn layui-btn-normal"><i
+                                                class="fa fa-check-square"></i>保存</button></td>
+                                </tr>
+                            </table>
+                            <!-- </form> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-tab-item">
+            <div class="layui-row">
+                <div class="layui-col-xs-4">
+                    <div class="layui-card">
+                        <!-- <form class="layui-form"> -->
+                        <table class="layui-table">
+                            <thead>
+                                <th>ID</th>
+                                <th>申请人ID</th>
+                                <th>API的ID</th>
+                                <th>申请时间</th>
+                                <th>审批人ID</th>
+                                <th>审批时间</th>
+                                <th>申请原因</th>
+                                <th>申请状态</th>
+                                <th>修改状态</th>
+                                <th>保存</th>
+                            </thead>
+                            <tbody></tbody>
+                            <tr v-for="api in apis">
+                                <td>[{api.id}]</td>
+                                <td>[{api.apply_uid}]</td>
+                                <td>[{api.api_id}]</td>
+                                <td>[{api.apply_time}]</td>
+                                <td>[{api.approve_uid}]</td>
+                                <td>[{api.approve_time}]</td>
+                                <td>[{api.apply_reason}]</td>
+                                <td>[{api.status}]</td>
+                                <td>
+                                    <select class="custom-select" v-bind:id="'d'+api.id">
+                                        <option value="000">000:未提交</option>
+                                        <option value="100">100:提交待审核</option>
+                                        <option value="101">101:已提交被拒绝</option>
+                                        <option value="200">200:审核通过待分配</option>
+                                        <option value="201">201:审核通过无人无开发</option>
+                                        <option value="300">300:审核通过已分配</option>
+                                        <option value="400">400:分配成功正在开发</option>
+                                        <option value="500">500:开发完成</option>
+                                    </select>
+                                </td>
+                                <td><button v-on:click="apiupdate(api.id)" style="background-color:#1E9FFF;"
+                                        type="button" class="layui-btn layui-btn-normal"><i
+                                            class="fa fa-check-square"></i>保存</button></td>
+                            </tr>
+                        </table>
+                        <!-- </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    var app = new Vue({
+        delimiters: ['[{', '}]'],
+        el: "#app",
+        data: {
+            apis: [],
+            orders: []
+        },
+        methods: {
+            api: function () {
+                $.get("/restful/api/dasset_apply_apis/?do=select", function (data) {
+                    app.apis = data;
+                });
+            },
+            order: function () {
+                $.get("/restful/api/dasset_apply_order/?do=select", function (data) {
+                    app.orders = data;
+                });
+            },
+            apiupdate(where) {
+                var data = $("#d" + where).val();
+                $.get("/restful/flow_control/dasset_apply_apis/?id=" + where + "&data=" + data, function (result) {
+                    layui.use('upload', function () {
+                        layer.msg(result, {
+                            time: 20000, //20s后自动关闭
+                            btn: ["知道了"]
+                        });
+                        app.api();
+                    });
+                });
+            },
+            dataupdate(where) {
+                var data = $("#a" + where).val();
+                $.get("/restful/flow_control/dasset_apply_order/?oid=" + where + "&data=" + data, function (result) {
+                    layui.use('upload', function () {
+                        layer.msg(result, {
+                            time: 20000, //20s后自动关闭
+                            btn: ["知道了"]
+                        });
+                        app.order();
+                    });
+                });
+            }
+        }
+    });
+    $(function () {
+        app.api();
+        app.order();
+    })
+    $("#l1").click(function () {
+        $("#l1").css({ "background-color": "#888" })
+        $("#l2").css({ "background-color": "#666" })
+    })
+    $("#l2").click(function () {
+        $("#l2").css({ "background-color": "#888" })
+        $("#l1").css({ "background-color": "#666" })
+
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<div class="breadcrumb-area">
+	<div class="container">
+		<ol class="breadcrumb">
+			<li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+			<li class="active">BI报表</li>
+		</ol>
+	</div>
+</div>
+<style>
+	a:hover {
+		color: gray;
+	}
+</style>
+<div class="shop-area">
+	<div class="container" id="content">
+		<div class="col-xs-9">
+			<div class="shop-bar" style="margin-bottom: 0px;padding-bottom:0px;">
+				<table class="table">
+					<tr>
+						<td style="width: 10%;">
+							<div class="selector-field f-left">
+								<label>专业</label>
+							</div>
+						</td>
+						<td>
+							<div class="selector-field f-left" style="text-align: left;">
+								<ul class="nav nav-pills">
+									{%  for item in major_list %}
+									<li id='{{item.major}}'>
+										<a href="/bi/?major={{item.major}}" style="font-size: 16px;">{{item.major}}</a>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="row" v-for="item in tables">
+				<hr>
+				<div class="col-xs-4" style="text-align: center;">
+					<a target="_blank" :href="item.url">
+						<img :src="item.thumbnail" style="height: 300px;" />
+					</a>
+				</div>
+				<div class="col-xs-7" style="margin-top: 20px;margin-left: 10px">
+					<h3><span class="glyphicon glyphicon-list-alt" style="color: gray;"></span>
+						<a target="_blank" :href="item.url">
+							[{item.report_desc}]
+						</a></h3>
+					<br>
+					<h5 style="line-height: 25px;"><span class="glyphicon glyphicon-knight"></span> [{item.major}]</h5>
+					<h5 style="line-height: 25px;"><span class="glyphicon glyphicon-home"></span>
+						[{item.tags.split('、').join(" | ")}]</h5>
+					<h5 style="line-height: 25px;"><span class="glyphicon glyphicon-user"></span> 作者：[{item.create_uid}]
+					</h5>
+					<h5 style="line-height: 25px;"><span class="glyphicon glyphicon-time"></span>
+						制作时间：[{item.create_time}]
+					</h5>
+					<h5 style="line-height: 25px;"><span class="glyphicon glyphicon-tasks"></span>
+						[{item.indicates}]</h5>
+				</div>
+			</div>
+			<br>
+		</div>
+		<div class="col-xs-3">
+			<div class="special-products-area dotted-style-2 ptb-20">
+				<div class="section-title">
+					<h3>常用BI报表</h3>
+				</div>
+				<div class="special-products-active border-1">
+					<div class="single-product white-bg" v-for="item in show_index">
+						<div class="product-img" style="text-align: center;">
+							<a target="_blank" :href="item.url">
+								<img src="/static/images/earth/k1.png" style="margin-top:20px;margin-bottom:20px" /></a>
+						</div>
+						<div class="product-content">
+							<div class="pro-title">
+								<h4><a target="_blank" :href="item.url">[{item.report_name}]</a></h4>
+							</div>
+							<div class="pro-rating ">
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+							</div>
+							<div class="price-box">
+								<span class="price product-price">查看次数：[{parseInt(Math.random()*500+100*(5))}]</span>
+							</div>
+							<div class="product-icon">
+								<div class="product-icon-left f-left">
+									<a target="_blank" :href="item.url">
+										<i class="fa fa-shopping-cart"></i>查看详情</a>
+								</div>
+								<div class="product-icon-right floatright">
+									<a href="#" data-toggle="tooltip" title="添加比较"><i class="fa fa-exchange"></i></a>
+									<a href="#" data-toggle="tooltip" title="点赞"><i class="fa fa-heart"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- <div class="single-product white-bg">
+						<div class="product-img" style="text-align: center;">
+							<a target="_blank"
+								href="http://192.168.0.97:8080/bi/viewer?proc=1&action=viewer&hback=true&db=!6cb3!!5317!!7535!!529b!!6708!!5ea6!!7ecf!!8425!!5206!!6790!!6307!!6807!!770b!!677f!H!2f!!53d1!!5c55!!90e8!!2f!!53d1!!5c55!!90e8!!6708!!5ea6!!4f8b!!4f1a!!6307!!6807!!770b!!677f!.db&isAi">
+								<img src="/static/images/earth/k2.png" style="margin-top:20px;margin-bottom:20px" /></a>
+						</div>
+						<div class="product-content">
+							<div class="pro-title">
+								<h4><a target="_blank"
+										href="http://192.168.0.97:8080/bi/viewer?proc=1&action=viewer&hback=true&db=!6cb3!!5317!!7535!!529b!!6708!!5ea6!!7ecf!!8425!!5206!!6790!!6307!!6807!!770b!!677f!H!2f!!53d1!!5c55!!90e8!!2f!!53d1!!5c55!!90e8!!6708!!5ea6!!4f8b!!4f1a!!6307!!6807!!770b!!677f!.db&isAi">
+										全社会用电量</a></h4>
+							</div>
+							<div class="pro-rating ">
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+							</div>
+							<div class="price-box">
+								<span class="price product-price">查看次数：383</span>
+							</div>
+							<div class="product-icon">
+								<div class="product-icon-left f-left">
+									<a target="_blank"
+										href="http://192.168.0.97:8080/bi/viewer?proc=1&action=viewer&hback=true&db=!6cb3!!5317!!7535!!529b!!6708!!5ea6!!7ecf!!8425!!5206!!6790!!6307!!6807!!770b!!677f!H!2f!!53d1!!5c55!!90e8!!2f!!53d1!!5c55!!90e8!!6708!!5ea6!!4f8b!!4f1a!!6307!!6807!!770b!!677f!.db&isAi">
+										<i class="fa fa-shopping-cart"></i>查看详情</a>
+								</div>
+								<div class="product-icon-right floatright">
+									<a href="#" data-toggle="tooltip" title="添加比较"><i class="fa fa-exchange"></i></a>
+									<a href="#" data-toggle="tooltip" title="点赞"><i class="fa fa-heart"></i></a>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+			</div>
+			<div class="special-products-area dotted-style-2 ptb-20">
+				<div class="section-title">
+					<h3>优秀BI作者</h3>
+				</div>
+				<div class="special-products-active border-1">
+					<div class="single-product white-bg">
+						<div class="product-img" style="text-align: center;">
+							<a href="#"><img src="/static/images/avatars/o8.png"
+									style="margin-top:20px;margin-bottom:20px" /></a>
+						</div>
+						<div class="product-content">
+							<div class="pro-title">
+								<h4><a href="#">郑涛</a></h4>
+							</div>
+							<div class="pro-rating ">
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+							</div>
+							<div class="price-box">
+								<span class="price product-price">创作数：4</span>
+							</div>
+							<div class="product-icon">
+								<div class="product-icon-left f-left">
+									<a href="#"><i class="fa fa-shopping-cart"></i>关注</a>
+								</div>
+								<div class="product-icon-right floatright">
+									<a href="#" data-toggle="tooltip" title="喜欢"><i class="fa fa-exchange"></i></a>
+									<a href="#" data-toggle="tooltip" title="加油"><i class="fa fa-heart"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="single-product white-bg">
+						<div class="product-img" style="text-align: center;">
+							<a href="#"><img src="/static/images/avatars/o9.png"
+									style="margin-top:20px;margin-bottom:20px" /></a>
+						</div>
+						<div class="product-content">
+							<div class="pro-title">
+								<h4><a href="#">孙思思</a></h4>
+							</div>
+							<div class="pro-rating ">
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+								<a><i class="fa fa-star"></i></a>
+							</div>
+							<div class="price-box">
+								<span class="price product-price">创作数：4</span>
+							</div>
+							<div class="product-icon">
+								<div class="product-icon-left f-left">
+									<a href="#"><i class="fa fa-shopping-cart"></i>关注</a>
+								</div>
+								<div class="product-icon-right floatright">
+									<a href="#" data-toggle="tooltip" title="加油"><i class="fa fa-exchange"></i></a>
+									<a href="#" data-toggle="tooltip" title="喜欢"><i class="fa fa-heart"></i></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$('#{{major}}').addClass("active");
+</script>
+<script>
+	var app = new Vue({
+		delimiters: ['[{', '}]'],
+		el: '#content',
+		data: {
+			tables: [],
+			show_index: []
+		},
+		methods: {
+			loadData: function () {
+				var _this = this;
+				$.get('/get_reports_by_major/?major={{major}}').then(function (result) {
+					console.log(result);
+					_this.tables = result;
+					for (var i in _this.tables) {
+						var date = _this.tables[i].create_time;
+						_this.tables[i].create_time = new Date(Date.parse(date.substr(0, date.length - 4))).Format("yyyy-MM-dd hh:mm:ss");
+					}
+					// _this.show_index = _this.tables.slice(0, 2);
+				});
+				$.get('/get_reports_by_major/?major=营销').then(function (result) {
+					_this.show_index = result.slice(0, 2);
+				});
+			},
+			init: function () {
+				this.loadData();
+			}
+		}
+	});
+	app.init();
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,13 @@
+#showshop_right{
+    width: 500px;
+    height: 400px;
+    position: fixed;
+    right: -250px;
+    top: 200px;
+    transition: 0.3s;
+}
+#showshop_right:hover{
+    right: 0px;
+    top: 200px;
+    transition: 0.3s;
+}

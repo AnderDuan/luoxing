@@ -1,0 +1,752 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<!--表详情页面-->
+
+<!-- Echarts作图脚本 -->
+<script>
+    function is_in_nodes(name, nodes) {
+        for (i in nodes) {
+            if (nodes[i].name == name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function is_in_columns(name, nodes) {
+        for (i in nodes) {
+            if (nodes[i].column_name == name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function generateCharts(schema_name, table_name, domID) {
+        var myChart = echarts.init(document.getElementById(domID));
+        myChart.showLoading();
+        $.get('/restful/map/' + schema_name + '/' + table_name + '/', function (xml) {
+            myChart.hideLoading();
+            console.log(xml);
+            data = xml;
+            var nodes = [];
+            var links = [];
+            var nodes_per_line = 10;
+            var max_len = 0;
+            for (var i in xml.blood_table_columns) {
+                item = xml.blood_table_columns[i];
+                if (item.length > max_len) {
+                    max_len = item.length;
+                }
+            }
+            console.log("最大字段数量", max_len);
+            var x = 20 * parseInt(max_len / nodes_per_line) + 100, y = 0;
+            // 当前表字的展现
+            var this_table_node = {
+                x: x,
+                y: y,
+                name: table_name,
+                category: "当前表",
+                label: {
+                    show: true,
+                },
+                symbol: 'image:///static/images/table_icons/main_table.png',
+                symbolSize: 40
+            }
+            nodes.push(this_table_node);
+
+            // 当前表字段的展现
+            for (i in xml.current_table_columns) {
+                var node = {};
+                node.x = x + 10 + parseInt(i / nodes_per_line) * 20;
+                // y += 10;
+                node.y = y + 10 + (i % nodes_per_line) * 10;
+                node.name = xml.current_table_columns[i].column_name;
+                node.category = '当前表字段';
+                node.symbol = 'image:///static/images/table_icons/main_column.png';
+                node.symbolSize = 20;
+                if (xml.current_table_columns.length <= nodes_per_line) {
+                    node.label = {
+                        show: true
+                    }
+                }
+                nodes.push(node);
+            }
+
+            // -------------------------血缘关系表的展现---------------------------------------------
+            x = 0;
+            y = 10;
+            for (i in xml.blood_tables) {
+                var blood_table_node = {};
+                var current_table_name = xml.blood_tables[i].source_table_name;
+                blood_table_node.name = current_table_name;
+                blood_table_node.x = x;
+                blood_table_node.y = y;
+                y += 10;
+                blood_table_node.label = {
+                    show: true
+                };
+                blood_table_node.category = '血缘关系表';
+                blood_table_node.symbol = 'image:///static/images/table_icons/blood_table.png'; //影响关系表的图片
+                blood_table_node.symbolSize = 40;
+                nodes.push(blood_table_node);
+                // console.log(nodes);
+                // console.log("当前血缘表id", i);
+                var columns = xml.blood_table_columns[current_table_name]
+                for (j in columns) {
+                    // console.log("影响表字段", item);
+                    var blood_table_column_node = {};
+                    var link = {};
+                    blood_table_column_node.name = current_table_name + "/" + columns[j].source_column_name;
+                    blood_table_column_node.x = x + 10 + parseInt(j / nodes_per_line) * 20;
+                    blood_table_column_node.y = y + (j % nodes_per_line) * 10;
+                    // y += 10;
+                    if (columns.length <= nodes_per_line) {
+                        blood_table_column_node.label = {
+                            show: true,
+                            position: 'left'
+                        }
+                    }
+                    // console.log(blood_table_column_node);
+                    blood_table_column_node.category = '血缘表字段'
+                    blood_table_column_node.symbol = 'image:///static/images/table_icons/blood_column.png';
+                    blood_table_column_node.symbolSize = 20;
+
+                    if (!is_in_nodes(blood_table_column_node.name, nodes)) {
+                        nodes.push(blood_table_column_node);
+                    } else {
+                        console.log(blood_table_column_node.name);
+                    }
+
+                    link.target = columns[j].target_column_name;
+                    link.source = current_table_name + "/" + columns[j].source_column_name;
+                    link.emphasis = {
+                        label: { show: true }
+                    };
+                    link.lineStyle = {
+                        curveness: 0.3
+                    };
+                    // console.log(link);
+                    links.push(link);
+                }
+                y += 10 * nodes_per_line;
+            }
+            // -------------------------血缘关系表结束--------------------------------------------
+
+            x = 20 * parseInt(xml.current_table_columns.length / nodes_per_line) + 20 * parseInt(max_len / nodes_per_line) + 200;
+            y = 10;
+            //------------------- 影响关系表-----------------------------------------------------------
+            for (i in xml.influence_tables) {
+                var blood_table_node = {};
+                var current_table_name = xml.influence_tables[i].target_table_name;
+                blood_table_node.name = current_table_name;
+                blood_table_node.x = x;
+                blood_table_node.y = y;
+                y += 10;
+                blood_table_node.label = {
+                    show: true
+                };
+                blood_table_node.category = '影响关系表';
+                blood_table_node.symbol = 'image:///static/images/table_icons/influence_table.png'; //影响关系表的图片
+
+                if (xml.influence_tables.length <= 1) {
+                    blood_table_node.symbolSize = 40;
+                    nodes.push(blood_table_node);
+                    var columns = xml.influence_table_columns[current_table_name]
+                    for (j in columns) {
+                        // console.log("影响表字段", item);
+                        var blood_table_column_node = {};
+                        var link = {};
+                        blood_table_column_node.name = current_table_name + "/" + columns[j].target_column_name;
+                        blood_table_column_node.x = x + 10 + parseInt(j / nodes_per_line) * 20;
+                        blood_table_column_node.y = y + (j % nodes_per_line) * 10;
+                        // y += 10;
+                        if (columns.length <= nodes_per_line) {
+                            blood_table_column_node.label = {
+                                show: true,
+                                position: 'right'
+                            }
+                        }
+                        // console.log(blood_table_column_node);
+                        blood_table_column_node.category = '影响表字段'
+                        blood_table_column_node.symbol = 'image:///static/images/table_icons/influence_column.png';
+                        blood_table_column_node.symbolSize = 20;
+
+                        if (!is_in_nodes(blood_table_column_node.name, nodes)) {
+                            nodes.push(blood_table_column_node);
+                        } else {
+                            console.log(blood_table_column_node.name);
+                        }
+
+                        link.source = columns[j].source_column_name;
+                        link.target = current_table_name + "/" + columns[j].target_column_name;
+                        link.emphasis = {
+                            label: { show: true }
+                        };
+                        link.lineStyle = {
+                            curveness: 0.3
+                        };
+                        // console.log(link);
+                        links.push(link);
+                    }
+                    y += 10 * nodes_per_line;
+                } else {
+                    blood_table_node.symbolSize = 20;
+                    nodes.push(blood_table_node);
+                    var link = {};
+                    link.source = table_name;
+                    link.target = current_table_name;
+                    link.lineStyle = {
+                        curveness: 0.3
+                    };
+                    links.push(link);
+                }
+            }
+            //-----------------------影响关系结束--------------------------------------------//
+
+
+            // 关联关系表
+            x = 20 * parseInt(xml.current_table_columns.length / nodes_per_line) + 20 * parseInt(max_len / nodes_per_line) + 200;
+            // y = 10;
+            for (i in xml.connection_tables) {
+                // 插入关联表的node
+                var item = xml.connection_tables[i];
+                var node = {};
+                node.name = item.table_name;
+                node.x = x;
+                node.y = y;
+                node.label = {
+                    show: true
+                }
+
+                node.category = '关联关系表';
+                node.symbol = 'image:///static/images/table_icons/connection_table.png';
+                node.symbolSize = 40;
+
+                if (!is_in_nodes(node.name, nodes)) {
+                    nodes.push(node);
+                    y += 10;
+                    console.log(node);
+                }
+                // 插入关联字段的node与link
+                var link = {};
+                var column_node = {};
+
+                // 先将字段用=分隔开，然后确认等号左右两边那个是当前表
+                var table_and_column = item.relation_columns.split("=");
+                var left_table = table_and_column[0].split(".");
+                var right_table = table_and_column[1].split(".");
+                var this_table, relate_table;
+                // console.log(relate_table);
+                // if (left_table[0] == table_name) {
+                if (is_in_nodes(left_table[1], xml.current_table_columns)) {
+                    this_table = left_table;
+                    relate_table = right_table;
+                    console.log(this_table);
+                } else {
+                    this_table = right_table;
+                    relate_table = left_table;
+                }
+                if (relate_table.length > 1) {
+                    column_node.name = relate_table.join("/");
+                } else {
+                    column_node.name = relate_table[0] + i;
+                }
+                column_node.x = x + 10;
+                column_node.y = y;
+                column_node.category = '关联表字段';
+                column_node.symbol = 'image:///static/images/table_icons/connection_column.png';
+                column_node.symbolSize = 20;
+                column_node.label = {
+                    show: true
+                };
+                if (!is_in_nodes(column_node.name, nodes)) {
+                    nodes.push(column_node);
+                    y += 10;
+                }
+
+
+                link.source = this_table[1];
+                if (relate_table.length > 1) {
+                    link.target = relate_table.join("/");
+                } else {
+                    link.target = relate_table[0] + i;
+                }
+                link.lineStyle = {
+                    curveness: 0.3
+                };
+                link.emphasis = {
+                    label: {
+                        show: true
+                    }
+                };
+                // console.log(link);
+                links.push(link);
+            }
+            console.log(nodes)
+
+            option = {
+                // tooltip: {},
+                // animationDuration: nodes_per_line00,
+                // animationEasingUpdate: 'quinticInOut',
+                title: {
+                    // text: '数据地图'
+                },
+                grid: {
+                    left: '20%',
+                    top: '20%'
+                },
+
+                animation: false,
+                legend: [{
+                    data: [
+                        { name: '当前表', icon: 'image:///static/images/table_icons/main_table.png' },
+                        { name: '当前表字段', icon: 'image:///static/images/table_icons/main_column.png' },
+                        { name: '血缘关系表', icon: 'image:///static/images/table_icons/blood_table.png' },
+                        { name: '血缘表字段', icon: 'image:///static/images/table_icons/blood_column.png' },
+                        { name: '关联关系表', icon: 'image:///static/images/table_icons/connection_table.png' },
+                        { name: '关联表字段', icon: 'image:///static/images/table_icons/connection_column.png' },
+                        { name: '影响关系表', icon: 'image:///static/images/table_icons/influence_table.png' },
+                        { name: '影响表字段', icon: 'image:///static/images/table_icons/influence_column.png' }
+                    ],
+                    orient: 'horizontal',
+                    align: 'left',
+                    x: 'center',
+                    y: 'bottom',
+                    textStyle: {
+                        // fontSize: 20
+                    }
+                }],
+                series: [
+                    {
+                        type: 'graph',
+                        layout: 'none',
+                        // layout: 'force',
+                        // layout: 'circular',
+                        edgeSymbol: ['pin', 'arrow'],
+                        data: nodes,
+                        links: links,
+                        roam: true,
+                        focusNodeAdjacency: true,
+                        itemStyle: {
+                            normal: {
+                                borderColor: '#fff',
+                                borderWidth: 1,
+                                shadowBlur: 10,
+                                shadowColor: 'rgba(0, 0, 0, 0.3)'
+                            }
+                        },
+                        categories: [
+                            { name: "当前表" },
+                            { name: "当前表字段" },
+                            { name: "血缘关系表" },
+                            { name: "血缘表字段" },
+                            { name: "关联关系表" },
+                            { name: "关联表字段" },
+                            { name: "影响关系表" },
+                            { name: "影响表字段" }
+                        ],
+                        label: {
+                            // show: false,
+                            position: 'right',
+                            formatter: '{b}'
+                        },
+                        lineStyle: {
+                            color: 'source',
+                            // curveness: 0.3,
+                            curveness: 0
+                        },
+                        emphasis: {
+                            lineStyle: {
+                                color: 'source',
+                                width: 10
+
+                            }
+                        }
+                    }
+                ]
+            };
+            myChart.setOption(option);
+            myChart.on('click', function (params) {
+                console.log(params)
+                if (params.data.category == "当前表字段" || params.data.category == "当前表") {
+                    $("#myTabs a[href='#profile']").tab('show');
+                    // sessionStorage.setItem("tab_str", "#myTabs a[href='#profile']");
+                } else if (params.data.category == "血缘字段" || params.data.category == "血缘表") {
+                    $("#myTabs a[href='#bloods']").tab('show');
+                    // sessionStorage.setItem("tab_str", "#myTabs a[href='#bloods']");
+                } else if (params.data.category == "关联表") {
+                    $('#myTabs a[href="#connections"]').tab('show');
+                    // sessionStorage.setItem("tab_str", "#myTabs a[href='#connections']");
+                }
+
+                if (params.data.value == "当前表字段" || params.data.value == "当前表") {
+                    $('#myTabs a[href="#profile"]').tab('show');
+                    // sessionStorage.setItem("tab_str", "#myTabs a[href='#profile']");
+                } else if (params.data.value == "血缘字段" || params.data.value == "血缘表") {
+                    $('#myTabs a[href="#bloods"]').tab('show');
+                    // sessionStorage.setItem("tab_str", "#myTabs a[href='#bloods']");
+                } else if (params.data.value == "关联表") {
+                    $('#myTabs a[href="#connections"]').tab('show');
+                    // sessionStorage.setItem("tab_str", "#myTabs a[href='#connections']");
+                }
+                // window.open(params.data.value, '_blank')
+                // location.href = params.data.value;
+            });
+        });
+    }
+
+</script>
+
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/">首页</a>
+            </li>
+            <li class="active">表详情</li>
+            <li>{{ result_columns[0]['TABLE_SCHEMA'] }}</li>
+            <li>{{ result_columns[0]['TABLE_NAME'] }}</li>
+        </ol>
+    </div>
+</div>
+
+{% if result_table.col_num.col_num>0 %}
+<div class="shop-area">
+    <br>
+    <div class="container">
+        <!-- Nav tabs -->
+        <div class="row">
+            <div class="col-xs-9">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="row">
+                        <h4 style="display: inline-block;">数据地图</h4>
+                        <div style="display: inline-flex;">
+                            <img style="height:30px;width:30px;" src="/static/images/table_icons/main_table.png">当前表
+                            <img style="height:30px;width:30px;" src="/static/images/table_icons/main_column.png">当前表字段
+                            <img style="height:30px;width:30px;" src="/static/images/table_icons/blood_table.png">血缘关系表
+                            <img style="height:30px;width:30px;" src="/static/images/table_icons/blood_column.png">血缘表字段
+                            <img style="height:30px;width:30px;"
+                                src="/static/images/table_icons/connection_table.png">关联关系表
+                            <img style="height:30px;width:30px;"
+                                src="/static/images/table_icons/connection_column.png">关联表字段
+                            <img style="height:30px;width:30px;"
+                                src="/static/images/table_icons/influence_table.png">影响关系表
+                            <img style="height:30px;width:30px;"
+                                src="/static/images/table_icons/influence_column.png">影响表字段
+
+                        </div>
+                    </div>
+                    <div id="echarts" style="height: 500px;width:100%;"></div>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="column" style="height: 500px;">
+                    <h4 style="padding-top: 20px;padding-bottom: 10px;border-bottom: 1px solid #ebebeb;">
+                        <span class="glyphicon glyphicon-tasks"></span>
+                        {% if result_table.col_info.table_name|length() < 18 %}
+                        {{ result_table.col_info.table_name }}
+                        {% else %}
+                        {{ result_table.col_info.table_name[:18] }}..
+                        {% endif %}
+                    </h4>
+                    <div class="sidebar-widget">
+                        <p><span class="glyphicon glyphicon-retweet"></span>
+                            表名：{{ result_table.col_info.table_name }}
+                        </p>
+                        <p><span class="glyphicon glyphicon-retweet"></span>
+                            表中文名：{{ result_table.col_info.table_name_ch }}
+                        </p>
+                        <!-- <p><span class="glyphicon glyphicon-open"></span>
+                            表更新日期：{{ result_table.col_info.update_time }}</p> -->
+                        <p><span class="glyphicon glyphicon-bishop"></span>
+                            表字段个数：{{ result_table.col_num.col_num }}</p>
+                        {% if result_table.col_info.table_schema!='qy_190215' %}
+                        <p><span class="glyphicon glyphicon-retweet"></span>
+                            所属系统：{{ result_table.col_info.system }}
+                        </p>
+                        <p><span class="glyphicon glyphicon-bishop"></span>
+                            业务一级：{{ table_process.lv_1_operation or '无' }}
+                        </p>
+                        <p><span class="glyphicon glyphicon-bishop"></span>
+                            业务二级：{{ table_process.lv_2_operation or '无' }}
+                        </p>
+                        <p><span class="glyphicon glyphicon-bishop"></span>
+                            业务三级：{{ table_process.lv_3_operation or '无' }}
+                        </p>
+                        <p><span class="glyphicon glyphicon-bishop"></span>
+                            重要等级：{{ table_process.import_level or '无' }}
+                        </p>
+                        <p><span class="glyphicon glyphicon-bishop"></span>
+                            影响程度：{{ table_process.yxcd or "无" }}
+                        </p>
+                        {% endif %}
+                        <p style="height: 80px;overflow-y: auto;">
+                            <span class="glyphicon glyphicon-retweet"></span>
+                            表详情：
+                            {{ result_table.col_info.table_comment }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-xs-3" id="app">
+                <div class="column">
+                    <h2 class="title-block"><span class="glyphicon glyphicon-tasks"></span>
+                        使用申请</h2>
+                    <div class="sidebar-widget">
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;如果需要使用到这张表，
+                            请在此提出申请，写清楚您的需求，我们会对您的申请进行仔细的研究，
+                            结果会以Data API的形式呈现给您。
+                        </p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;请点下面的按钮添加到购物车中，然后在购物车中进行结算</p>
+                        <button class="form-control btn btn-success" style="height: 60px;" @click="saveShopCar();">
+                            添加到购物车
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="column">
+                    <h2 class="title-block"><span class="glyphicon glyphicon-tasks"></span>
+                        正在申请</h2>
+                    <div class="sidebar-widget">
+                        <ul class="sidebar-menu">
+                            <li v-for="item in shopCarlist">
+                                <span class="glyphicon glyphicon-calendar"></span> [{item.table_name}]
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <ul class="nav nav-tabs" role="tablist" id="myTabs">
+                    <li role="presentation" class="active">
+                        <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">表详情</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#bloods" aria-controls="bloods" role="tab" data-toggle="tab">血缘关系详情</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#connections" aria-controls="conections" role="tab" data-toggle="tab">关联关系详情</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#influence" aria-controls="influence" role="tab" data-toggle="tab">影响关系详情</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#sample" aria-controls="sample" role="tab" data-toggle="tab">数据样例</a>
+                    </li>
+                </ul>
+                <br>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="profile">
+                        <div style="height: 1000px;overflow:auto">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th></th>
+                                    <th style="width: 10%;">字段名称</th>
+                                    <th style="width: 10%;">字段类型</th>
+                                    <th style="width: 10%;">是否可空</th>
+                                    <th style="width: 60%;">字段注释</th>
+                                </thead>
+                                <tbody>
+                                    {% for item in result_columns %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ item['COLUMN_NAME'] }}</td>
+                                        <td>{{ item['COLUMN_TYPE'] }}</td>
+                                        <td>{{ item['is_nullable'] }}</td>
+                                        <td>{{ item['COLUMN_COMMENT'] }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="bloods">
+                        <div style="height: 1000px;overflow:auto">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th></th>
+                                    <th>目标表</th>
+                                    <th>目标字段</th>
+                                    <th>来源系统</th>
+                                    <th>来源表</th>
+                                    <th>来源字段</th>
+                                </thead>
+                                <tbody>
+                                    {% for item in result_bloods %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ item.table_target_name }}</td>
+                                        <td>{{ item.target_column_name }}</td>
+                                        <td>{{ item.source_system }}</td>
+                                        <td>
+                                            <!-- <a href="/tables/{{ item.source_system }}/{{ item.source_table_name }}/"> -->
+                                                {{ item.source_table_name }}
+                                            <!-- </a> -->
+                                        </td>
+                                        <td>{{ item.source_column_name }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="connections">
+                        <div style="overflow:auto;">
+                            <table class="table table-striped" style="word-wrap:break-word;word-break: break-all;">
+                                <thead>
+                                    <th></th>
+                                    <th style="width:20%;">当前表</th>
+                                    <th style="width:20%;">当前表中文名</th>
+                                    <th style="width:20%;">关联表</th>
+                                    <th style="width:20%;">关联表中文名</th>
+                                    <th style="width:20%;">关联字段</th>
+                                </thead>
+                                <tbody>
+                                    {% for item in result_connections %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td><a
+                                                href="/tables/{{ result_columns[0]['TABLE_SCHEMA'] }}/{{ item.main_table_name }}/">{{ item.main_table_name }}</a>
+                                        </td>
+                                        <td>{{ item.main_table_desc }}</td>
+                                        <td><a
+                                                href="/tables/{{ result_columns[0]['TABLE_SCHEMA'] }}/{{ item.relate_table_name }}/">{{ item.relate_table_name }}</a>
+                                        </td>
+                                        <td>{{ item.relate_table_desc }}</td>
+                                        <td> {{ item.relation_columns }} </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="influence">
+                        <div style="height: 1000px;overflow:auto">
+                            <table class="table table-striped">
+                                <thead>
+                                    <th></th>
+                                    <th>受影响表</th>
+                                    <th>影响字段</th>
+                                    <th>来源系统</th>
+                                    <th>来源表</th>
+                                    <th>来源字段</th>
+                                </thead>
+                                <tbody>
+                                    {% for item in result_influences %}
+                                    <tr>
+                                        <td>{{ loop.index }}</td>
+                                        <td>{{ item.table_target_name }}</td>
+                                        <td>{{ item.target_column_name }}</td>
+                                        <td>{{ item.source_system }}</td>
+                                        <td>{{ item.source_table_name }}</td>
+                                        <td>{{ item.source_column_name }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="sample">
+                        <div style="height: 600px;overflow:auto">
+                            {% if table_data[0] | length() >0 %}
+                            <table class="table">
+                                <tr>
+                                    {% for key in table_data[0] %}
+                                    <th>{{ key }}</th>
+                                    {% endfor %}
+                                    {% for item in table_data %}
+                                <tr>
+                                    {% for key in item %}
+                                    <td>{{ item[key] }}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                                </tr>
+                            </table>
+                            {% else %}
+                            数据为空
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+
+<script>
+    generateCharts("{{result_columns[0]['TABLE_SCHEMA']}}", "{{result_columns[0]['TABLE_NAME']}}", "echarts");
+    window.onload = function () {
+        var tab_Str = sessionStorage.getItem("tab_str", null);
+        if (tab_Str) {
+            $(tab_Str).tab('show');
+        }
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // var tab_str = e.target.href.split('#')[1];
+            // sessionStorage.setItem("tab_str", '#myTabs a[href="#' + tab_str + '"]');
+            // $('#myTabs a[href="#' + tab_str + '"]').tab('show');
+            // console.log(e.target['href']) // newly activated tab
+            // console.log(e.relatedTarget) // previous active tab
+        })
+    }
+</script>
+<script>
+    var app = new Vue({
+        delimiters: ['[{', '}]'],
+        el: '#app',
+        data: {
+            user_id: "{{session['user_id']['user_id']}}",
+            table_id: "{{result_table.col_info.id}}",
+            schema_name: "{{result_columns[0]['TABLE_SCHEMA']}}",
+            table_name: "{{result_columns[0]['TABLE_NAME']}}",
+            shopCarlist: []
+        },
+        methods: {
+            saveShopCar: function () {
+                data = {
+                    user_id: this.user_id,
+                    table_id: this.table_id,
+                    source_system: this.schema_name,
+                    table_name: this.table_name
+                };
+                console.log(data);
+                var _this = this;
+                $.get('/restful/shopcar/save_order/?data=' + JSON.stringify(data))
+                    .then(function (result) {
+                        console.log(result);
+                        if (result == '200') {
+                            alert("添加成功！可通过购物车查看当前订单！");
+                            _this.showShopCar();
+                            header.showShopCar();
+                        } else if (result == '已经存在') {
+                            alert("您在当前订单中已经申请过此表，请勿重复申请！");
+                        } else {
+                            alert("添加异常,请联系管理员");
+                        }
+                    });
+            },
+            showShopCar: function () {
+                var _this = this;
+                $.get("/restful/shopcar/list/{{session['user_id']['user_id']}}/").then(function (result) {
+                    console.log(result);
+                    _this.shopCarlist = result;
+                });
+            }
+        }
+    });
+    app.showShopCar();
+</script>
+{% else %}
+<div class="container" style="height: 500px;">
+    <h2>
+        此表尚未收录到全业务统一数据中心
+    </h2>
+</div>
+{% endif %}
+{% endblock %}

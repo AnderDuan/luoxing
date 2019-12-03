@@ -1,0 +1,50 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<link>
+<h5>新增用户</h5>
+<form class="layui-form" lay-filter="add-form">
+    <div class="user">
+        <i class="fa fa-credit-card"></i><input name="user_id" placeholder="请输入用户账号" class="layui-input">
+        <i class="fa fa-address-card"></i><input name="user_name" placeholder="请输入用户姓名" class="layui-input">
+        <i class="layui-icon">&#xe673;</i><input name="passwd" placeholder="请输入用户密码" class="layui-input">
+        <i class="fa fa-envelope-o" aria-hidden="true"></i><input name="mail" placeholder="请输入用户邮箱" class="layui-input">
+        <i class="layui-icon">&#xe637;</i><input name="regest_date" placeholder="请选择注册日期" type="text"
+            class="layui-input" id="date">
+        <i class="fa fa-universal-access"></i><input name="user_status" placeholder="请输入账号状态" class="layui-input">
+        <button class="layui-btn" lay-submit="" lay-filter="formDemo"><i class="fa fa-check-square-o"></i>提交</button>
+    </div>
+</form>
+<form class="layui-form" style="margin-left:200px;">
+    <input type="radio" name="role_id" value="1" title="需求人员">
+    <input type="radio" name="role_id" value="2" title="审批人员">
+    <input type="radio" name="role_id" value="3" title="管控人员">
+    <input type="radio" name="role_id" value="4" title="实施人员">
+    <br style="color:#007DDB ">
+</form>
+<script>
+    $("body").css({ "background-color": "#eee" })
+    $(".user>i").css({ "font-size": "25px", "color": "#666", "position": "absolute", "display": "block", "margin-left": "-35px" })
+    $(".user").css({ "width": "500px", "height": "320px", "margin": "0 0 0 200px" });
+    $(".layui-form-label").eq(0).css({ "width": "110px" });
+    $("form .layui-input").css({ "width": "200px", "border": "1px solid #1e1e1e", "margin": "0 0 20px 0" });
+    $("button").last().css({ "width": "130px", "margin": "50px 0 0 20px", "position": "absolute" });
+    $("button").last().click(function () {
+        from("user_info")
+        var role_id = $("input[type='radio']:checked").val();
+        var user_id = $(".user input").first().val();
+        role_user = { 'role_id': role_id, 'user_id': user_id };
+        $.get("/restful/api/user_role/?do=insert&data=" + JSON.stringify(role_user))
+    })
+    layui.use(['element', 'form', 'laydate'], function () {
+        var form = layui.form;
+        var element = layui.element;
+        laydate = layui.laydate;
+        //日期
+        laydate.render({
+            elem: '#date'
+            , theme: 'grid'
+            , trigger: 'click'
+        });
+    });
+</script>
+{% endblock %}

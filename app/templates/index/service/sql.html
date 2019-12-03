@@ -1,0 +1,223 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">SQL</li>
+        </ol>
+    </div>
+</div>
+<div class="shop-area">
+    <div class="container" id='sql'>
+        <div class="col-xs-9">
+            <div class="shop-bar row" style="margin-bottom: 0px;padding-bottom:0px;">
+                <table class="table">
+                    <tr>
+                        <td style="width: 10%;">
+                            <div class="selector-field f-left"><label>专业</label></div>
+                        </td>
+                        <td>
+                            <ul class="nav nav-pills">
+                                {% for item in level1 %}
+                                <li id='{{item.business_system}}'>
+                                    <a href="/sql/?business_system={{item['business_system']}}#sql"
+                                        style="font-size: 16px;">
+                                        {{item.business_system}}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="selector-field f-left"><label>业务</label></div>
+                        </td>
+                        <td>
+                            <ul class="nav nav-pills">
+                                {% for item in level2 %}
+                                <li id='{{item.major}}'>
+                                    <a href="/sql/?business_system={{business_system}}&major={{item.major}}#sql"
+                                        style="font-size: 16px;">
+                                        {{item.major}}
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                <script>
+                    $('#{{major}}').addClass('active');
+                    $('#{{business_system}}').addClass('active');
+                </script>
+            </div>
+            <br>
+            <div class="row">
+                {% for item in sql %}
+                <div class="col-xs-6" style="margin-bottom: 20px;">
+                    <div class="form-fields pb-30" style="border-color:#b4b4b4cb;">
+                        <h4><span class="glyphicon glyphicon-align-justify"></span> {{item.theme_name}}</h4>
+                        <pre style="border-radius: 0;height: 200px;"><code>{{item.sql}}</code></pre>
+                        <div style="height: 50px;">
+                            <h5 style="line-height: 20px;">
+                                <span class="glyphicon glyphicon-tasks"></span> {{item.search_rule}}
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="form-action floatright">
+                        <label>{{item.business_system}}></label>
+                        <label>{{item.major}}</label>
+                        <input value="收藏" type="submit" onclick="alert('收藏成功！')">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="special-products-area dotted-style-2 ptb-20">
+                <div class="section-title">
+                    <h3>最多收藏</h3>
+                </div>
+                <div class="special-products-active border-1">
+                    <div class="single-product white-bg">
+                        <div class="product-img" style="text-align: center;">
+                            <a target="_blank" href="#">
+                                <img src="/static/images/earth/k1.png" style="margin-top:20px;margin-bottom:20px" /></a>
+                        </div>
+                        <div class="product-content">
+                            <div class="pro-title">
+                                <h4><a href="#">发展部月度例会指标</a>
+                                </h4>
+                            </div>
+                            <div class="pro-rating ">
+                                <a><i class="fa fa-star"></i></a>
+                                <a><i class="fa fa-star"></i></a>
+                                <a><i class="fa fa-star"></i></a>
+                                <a><i class="fa fa-star"></i></a>
+                                <a><i class="fa fa-star"></i></a>
+                            </div>
+                            <div class="price-box">
+                                <span class="price product-price">收藏次数：543</span>
+                            </div>
+                            <div class="product-icon">
+                                <div class="product-icon-left f-left">
+                                    <span data-toggle="tooltip" title="添加收藏">
+                                        <i class="fa fa-shopping-cart" onclick="alert('收藏成功！')"> 添加收藏</i></span>
+                                </div>
+                                <div class="product-icon-right floatright">
+                                    <a href="" data-toggle="tooltip" title="添加比较"><i class="fa fa-exchange"></i></a>
+                                    <a href="" data-toggle="tooltip" title="点赞"><i class="fa fa-heart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product white-bg">
+                        <div class="product-img" style="text-align: center;">
+                            <a target="_blank" href="#">
+                                <img src="/static/images/earth/k2.png" style="margin-top:20px;margin-bottom:20px" /></a>
+                        </div>
+                        <div class="product-content">
+                            <div class="pro-title">
+                                <h4><a target="_blank" href="#">
+                                        全社会用电量</a></h4>
+                            </div>
+                            <div class="pro-rating ">
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                            </div>
+                            <div class="price-box">
+                                <span class="price product-price">查看次数：383</span>
+                            </div>
+                            <div class="product-icon">
+                                <div class="product-icon-left f-left">
+                                    <a target="_blank" href="#">
+                                        <i class="fa fa-shopping-cart"></i>查看详情</a>
+                                </div>
+                                <div class="product-icon-right floatright">
+                                    <a href="#" data-toggle="tooltip" title="添加比较"><i class="fa fa-exchange"></i></a>
+                                    <a href="#" data-toggle="tooltip" title="点赞"><i class="fa fa-heart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="special-products-area dotted-style-2 ptb-20">
+                <div class="section-title">
+                    <h3>SQL专家</h3>
+                </div>
+                <div class="special-products-active border-1">
+                    <div class="single-product white-bg">
+                        <div class="product-img" style="text-align: center;">
+                            <a href="#"><img src="/static/images/avatars/o8.png"
+                                    style="margin-top:20px;margin-bottom:20px" /></a>
+                        </div>
+                        <div class="product-content">
+                            <div class="pro-title">
+                                <h4><a href="#">郑涛</a></h4>
+                            </div>
+                            <div class="pro-rating ">
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                            </div>
+                            <div class="price-box">
+                                <span class="price product-price">创作数：4</span>
+                            </div>
+                            <div class="product-icon">
+                                <div class="product-icon-left f-left">
+                                    <a href="#"><i class="fa fa-shopping-cart"></i>关注</a>
+                                </div>
+                                <div class="product-icon-right floatright">
+                                    <a href="#" data-toggle="tooltip" title="喜欢"><i class="fa fa-exchange"></i></a>
+                                    <a href="#" data-toggle="tooltip" title="加油"><i class="fa fa-heart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="single-product white-bg">
+                        <div class="product-img" style="text-align: center;">
+                            <a href="#"><img src="/static/images/avatars/o9.png"
+                                    style="margin-top:20px;margin-bottom:20px" /></a>
+                        </div>
+                        <div class="product-content">
+                            <div class="pro-title">
+                                <h4><a href="#">孙思思</a></h4>
+                            </div>
+                            <div class="pro-rating ">
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                                <a href="#"><i class="fa fa-star"></i></a>
+                            </div>
+                            <div class="price-box">
+                                <span class="price product-price">创作数：4</span>
+                            </div>
+                            <div class="product-icon">
+                                <div class="product-icon-left f-left">
+                                    <a href="#"><i class="fa fa-shopping-cart"></i>关注</a>
+                                </div>
+                                <div class="product-icon-right floatright">
+                                    <a href="#" data-toggle="tooltip" title="加油"><i class="fa fa-exchange"></i></a>
+                                    <a href="#" data-toggle="tooltip" title="喜欢"><i class="fa fa-heart"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+<br>
+{% endblock %}

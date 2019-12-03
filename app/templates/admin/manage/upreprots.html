@@ -1,0 +1,77 @@
+{% extends 'admin/base.html' %}
+{% block body %}
+<h5>报表上传</h5>
+<form class="layui-form" action="">
+    <i class="layui-icon" style="margin-top:5px">&#xe656;</i><input type="text" name="type" lay-verify="required"
+        placeholder="请输入类型" autocomplete="off" class="layui-input">
+    <i class="layui-icon" style="margin-top:50px">&#xe63c;</i><input type="text" name="report_name"
+        lay-verify="required" placeholder="请输入Title" autocomplete="off" class="layui-input">
+    <i class="layui-icon" style="margin-top:100px">&#xe649;</i><input type="text" name="report_desc"
+        lay-verify="required" placeholder="请输入描述" autocomplete="off" class="layui-input">
+    <i class="layui-icon" style="margin-top:150px">&#xe64d;</i><input type="text" name="url" lay-verify="required"
+        placeholder="请输入URL" autocomplete="off" class="layui-input">
+    <i class="layui-icon" style="margin-top:200px">&#xe66e;</i><input type="text" name="major" lay-verify="required"
+        placeholder="所属专业" autocomplete="off" class="layui-input">
+    <i class="layui-icon" style="margin-top:250px">&#xe615;</i><input type="text" name="tags" lay-verify="required"
+        placeholder="请输入关键词" autocomplete="off" class="layui-input">
+    <i class="layui-icon" style="margin-top:300px">&#xe62c;</i><input type="text" name="indicates" lay-verify="required"
+        placeholder="本报表涉及到的指标" autocomplete="off" class="layui-input">
+    <div class="layui-upload">
+        <button type="button" class="layui-btn layui-btn-normal" id="test8"><i
+                class="fa fa-external-link"></i>选择缩略图</button>
+        <button type="button" class="layui-btn" id="test9"><i class="fa fa-paper-plane"></i>开始上传</button>
+    </div>
+</form>
+<script>
+    $("form").eq(0).css({ "width": "400px", "height": "520px", "margin": "0 0 0 200px" });
+    $("form>input").css({ "width": "250px", "float": "right", "margin": "10px 0 0 30px", "border": "1px solid #1e1e1e" });
+    $("form>div").css({ "position": "absolute", "margin": "400px 0 0 138px" })
+    $("form>i").css({ "color": "#666", "font-size": "30px", "display": "block", "position": "absolute", "margin-left": "90px" })
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            , upload = layui.upload
+            , layer = layui.layer;
+        //普通图片上传
+        var uploadInst = upload.render({
+            elem: '#test8',
+            url: '/restful/upimage/dasset_reports/',
+            method: 'POST',
+            accept: 'file',
+            auto: false,
+            bindAction: '#test9',
+            size: 1024 * 20,
+            done: function (res) {
+                console.log(res);
+                var type = $("form input").eq(0).val();
+                var report_name = $("form input").eq(1).val();
+                var report_desc = $("form input").eq(2).val();
+                var url = $("form input").eq(3).val();
+                //var create_time=$("form input").eq(4).val();
+                var major = $("form input").eq(4).val();
+                var tags = $("form input").eq(5).val();
+                var indicates = $("form input").eq(6).val();
+                updata = {
+                    'type': type, 'report_name': report_name,
+                    'report_desc': report_desc,
+                    'url': url, 'major': major,
+                    'tags': tags, 'thumbnail': "/static/upimages/" + res,
+                    'indicates': indicates
+                };
+                $.post("/restful/upimage/dasset_reports/?data=" + JSON.stringify(updata), function (result) {
+                    layer.msg('上传成功', {
+                        time: 20000, //20s后自动关闭
+                        btn: ['知道了']
+                    });
+                });
+            }, error: function () {//请求异常回调
+                layer.msg('失败', {
+                    time: 20000, //20s后自动关闭
+                    btn: ['知道了']
+                });
+            }
+        });
+    });
+
+
+</script>
+{% endblock %}

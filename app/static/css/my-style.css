@@ -1,0 +1,31 @@
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: #fff;
+    /* background-color: #337ab7; */
+    /* background-color: rgb(0, 101, 105); */
+    background-color: #0072be;
+    /* background-color: #373277; */
+}
+
+.nav-pills>li>a {
+    border-radius: 0px
+    /* border-radius: 4px; */
+}
+
+.nav-tabs>li>a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 0px 0px 0 0;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+.form-control {
+    border-radius: 0;
+}
+
+.thumbnail {
+    border-radius: 0;
+}

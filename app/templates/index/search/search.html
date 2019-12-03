@@ -1,0 +1,171 @@
+{% extends 'index/base.html' %}
+{% block body %}
+
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">搜索结果</li>
+        </ol>
+    </div>
+</div>
+<div class="container">
+    <div class="row" id="mood" style="min-height: 500px;">
+
+        <div class="col-md-9 col-sm-8">
+            {% if result2.cnt>0 %}
+            <div class="special-products-area dotted-style-2 ptb-20">
+                <div class="section-title">
+                    <h3>BI报表</h3>
+                </div>
+                <div class="special-products-active border-1">
+                    {% for item in result2.dataP %}
+                    <div class="single-product white-bg">
+                        <iframe src="{{item.url}}" style="width: 100%;height:400px;border:0;" frameborder="0">
+                        </iframe>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="special-products-area dotted-style-2 ptb-20">
+                <div class="section-title">
+                    <h3>数据表 共{{result.cnt}}张</h3>
+                </div>
+                <style>
+                    .caption a:hover {
+                        color: blue;
+                    }
+                </style>
+                {%  for item in result.data %}
+                <div>
+                    <div class="caption">
+                        <hr>
+
+                        <img src="/static/images/datasets/table5.png"
+                            style="height: 30px;display: inline-block;opacity:0.7;">
+                        &nbsp;
+                        <h4 style="display: inline-block;">
+                            <a style="font-size: 20px;" target="_blank"
+                                href="/tables/{{item.table_schema}}/{{item.table_name}}/">
+                                <u id="table_{{loop.index}}">
+                                    {{item.table_name}}</u></a>
+                        </h4>
+                        <div>
+                            <p>
+                                <span class="glyphicon glyphicon-cloud" style="color: black;"></span>
+                                {{item.system}}({{item.name}})
+                                &nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-list" style="color: black;"></span>
+                                {{item.table_schema}} &nbsp;&nbsp;
+                                <span class="glyphicon glyphicon-knight" style="color: black;"></span>
+                                {{item.department}}
+                            </p>
+                            <p id="comment_{{loop.index}}" style="display: inline-block;white-space: pre-line;"
+                                title="{{item.table_comment}}">
+                                表详情：{{item.table_comment}}
+                            </p>
+                        </div>
+                        <!-- <a target="_blank" class="btn btn-success btn-small" role="button">查看详情</a> -->
+                        <!-- <a target="_blank"
+                                                href="/apply/?db={{item.table_schema}}&table={{item['table_name']}}"
+                                                class="btn btn-warning" role="button">申请使用</a> -->
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="content-sortpagibar" style="text-align: center;">
+                <!-- <div class="product-count display-inline">Showing 1 - 12 of 13 items</div> -->
+                <ul class="shop-pagi selector-field display-inline">
+                    <label>请选择页码</label>
+                    <li><a href="/search/?keyword={{result.keyword}}&page={{result.page-1}}">
+                            <i class="fa fa-angle-left"></i></a>
+                    </li>
+                    <li>
+                        <select id="page" class="selector-field">
+                            {% for i in range(((result.cnt-1)/10)|int() +1)  %}
+                            <option>{{i+1}}</option>
+                            {% endfor %}
+                        </select>
+                        <script>
+                            $('#page').val('{{result.page}}');
+                            $('#page').change(
+                                function () {
+                                    location.href = '/search/?keyword={{result.keyword}}&page=' + $('#page').val();
+                                }
+                            );
+                        </script>
+                    </li>
+                    <li><a href="/search/?keyword={{result.keyword}}&page={{result.page+1}}">
+                            <i class="fa fa-angle-right"></i></a>
+                    </li>
+                    &nbsp;<label> 共{{((result.cnt-1)/10)|int() + 1}}页</label>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3 col-sm-4">
+            <div style="max-width: 600px;position:fixed;width:300px;">
+                <div class="column">
+                    <h2 class="title-block">常用热搜词</h2>
+                    <div class="sidebar-widget">
+                        <ul class="sidebar-menu">
+                            <li><span class="glyphicon glyphicon-usd"></span>
+                                <a href='/search/?type=all&keyword=售电量&page=1'>售电量<span>(1852次搜索)</span></a></li>
+                            <li><span class="glyphicon glyphicon-wrench"></span>
+                                <a href='/search/?type=all&keyword=线损&page=1'>线损<span>(1397次搜索)</span></a></li>
+                            <li><span class="glyphicon glyphicon-flash"></span>
+                                <a href='/search/?type=all&keyword=供电量&page=1'>供电量<span>(1198次搜索)</span></a></li>
+                            <li><span class="glyphicon glyphicon-user"></span>
+                                <a href='/search/?type=all&keyword=用户&page=1'>用户<span>(962次搜索)</span></a></li>
+                            <li><span class="glyphicon glyphicon-barcode"></span>
+                                <a href='/search/?type=allkeyword=变压器&page=1'>变压器<span>(611次搜索)</span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--文字列表展示-->
+
+
+    </div>
+</div>
+
+<script>
+
+    // function detailsShow() {
+    //     document.getElementById("details").style.display = '';
+    //     document.getElementById("pictures").style.display = 'none';
+    // }
+    // function picturesShow() {
+    //     document.getElementById("pictures").style.display = '';
+    //     document.getElementById("details").style.display = 'none';
+    // }
+
+    // $(document).ready(function () {
+    for (var i = 1; i <= 10; i++) {
+        // var table = $('#table_' + i).html();
+        // var comment = $('#comment_' + i).html();
+        console.log(i);
+        var table = document.getElementById("table_" + i).innerHTML;
+        var comment = document.getElementById("comment_" + i).innerHTML;
+        // console.log(table);
+        // console.log(typeof (table));
+        var rep_table = table.split("{{result.keyword}}")
+        var rep_comment = comment.split("{{result.keyword}}")
+        // var rep_table = table.replace("{{result.keyword}}", '<span style="color:red;">{{result.keyword}}</span>');
+        // var rep_comment = comment.replace("{{result.keyword}}", '<span style="color:red;">{{result.keyword}}</span>');
+        $('#table_' + i).html(rep_table.join('<span style="color:red;background:yellow;">{{result.keyword}}</span>'));
+        $('#comment_' + i).html(rep_comment.join('<span style="color:red;background:yellow;">{{result.keyword}}</span>'));
+    }
+    // });
+
+</script>
+<script>
+    $('search').val('{{result.keyword}}');
+    var search = document.getElementById('search');
+    console.log('value:', search.value);
+    search.value = '{{result.keyword}}';
+</script>
+{% endblock %}

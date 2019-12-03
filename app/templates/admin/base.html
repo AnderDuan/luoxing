@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>数据资产目录管理平台</title>
+    <link rel="stylesheet" href="/static/css/layui.css" media="all">
+    <link rel="stylesheet" href="/static/css/bootstrap4.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.css">
+    <!-- <link rel="stylesheet" href="/static/css/style2.css"> -->
+    <link rel="stylesheet" href="/static/css/my-style.css">
+
+    <script src="/static/js/jquery-1.12.4.min.js" type="text/javascript"></script>
+    <script src="/static/js/date.js"></script>
+    <script src="/static/js/layui.js"></script>
+    <script src="/static/js/echarts.js" type="text/javascript"></script>
+    <script src="/static/js/vue.js" type="text/javascript"></script>
+    <script src="/static/js/axios.min.js" type="text/javascript"></script>
+    <script src="/static/js/BatchDelete.js" type="text/javascript"></script>
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo" style="font-size: 25px"><i style="font-size:28px"
+                    class="layui-icon">&#xe663;</i>数据资源管理
+            </div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li id="message" class="layui-nav-item">
+                    <span style="background-color: #FF5722;color:white;" class="layui-badge-rim">0</span>
+                    <i style="font-size:20px;color:white" class="layui-icon">&#xe667;</i>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="/static/images/avatars/o5.png" class="layui-nav-img">
+                        {{session['user_id']['user_name']}}
+                    </a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/index/"><i style="font-size:20px;" class="fa fa-home"></i> 返回首页</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="/login/"><i style="font-size:20px;" class="fa fa-sign-out" aria-hidden="true"></i>退出</a>
+                </li>
+            </ul>
+        </div>
+        <h1 id="session_role" style="overflow: hidden">{{session['user_id']['user_id']}}</h1>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+
+                {% if session.user_id.role_id!=1 %}
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;"><i class="fa fa-database"></i>&nbsp;&nbsp;数据管理</a>
+                        <dl class="layui-nav-child">
+                            <dd id="nav-manage-tables"><a href="/admin/manage/tables/"><i class="fa fa-calendar"></i>
+                                    表管理</a></dd>
+                            <dd id="nav-manage-bloods"><a href="/admin/manage/bloods"><i class="fa fa-heartbeat"></i>
+                                    血缘关系管理</a>
+                            </dd>
+                            <dd id="nav-manage-connections"><a href="/admin/manage/connections/"><i
+                                        class="fa fa-exchange"></i> 关联关系管理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe857;</i>&nbsp;&nbsp;服务管理</a>
+                        <dl class="layui-nav-child">
+                            <dd id="nav-manage-sqls"><a href="/admin/manage/sqls/"><i class="layui-icon">&#xe6b2;</i>
+                                    常用SQL管理</a></dd>
+                            <dd id="nav-manage-reports"><a href="/admin/manage/reports/"><i class="fa fa-bar-chart"></i>
+                                    数据报表管理</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe629;</i>&nbsp;&nbsp;数据申请管理</a>
+                        <dl class="layui-nav-child">
+                            <dd id='nav-manage-beg'><a href="/admin/manage/beg"><i class="fa fa-pencil-square-o"
+                                        aria-hidden="true"></i> 我的申请</a></dd>
+                            <dd id="nav-manage-flow"><a href="/admin/manage/flow/"><i class="fa fa-stack-overflow"
+                                        aria-hidden="true"></i> 审批流程</a></dd>
+                            <!-- <dd id='nav-apply-table'><a href="/admin/manage/apply/"><i class="fa fa-wpforms"></i>
+                                    SQL申请管理</a></dd> -->
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe681;</i>&nbsp;&nbsp;上传</a>
+                        <dl class="layui-nav-child">
+                            <dd id='nav-manage-reprots'><a href="/admin/manage/reprots/"><i
+                                        class="fa fa-line-chart"></i>
+                                    数据报表上传</a></dd>
+                            <dd id='nav-manage-upapi'><a href="/admin/manage/upapi/"><i class="fa fa-paper-plane-o"></i>
+                                    API上传</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;"><i class="layui-icon">&#xe613;</i>&nbsp;&nbsp;用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd id="nav-manage-newuser"><a href="/admin/manage/newuser"><i class="fa fa-user-plus"
+                                        aria-hidden="true"></i> 新增用户</a>
+                            </dd>
+                            <dd id="nav-manage-userrole"><a href="/admin/manage/userrole"><i
+                                        class="fa fa-user-secret"></i>
+                                    用户权限管理</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+                {% else %}
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;"><i class="layui-icon">&#xe629;</i>&nbsp;&nbsp;数据申请管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="/admin/manage/beg"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                    我的申请</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+                {% endif %}
+            </div>
+            <script>
+                $('#{{classID}}').addClass('layui-this');
+                $('#{{navID}}').addClass('layui-this');
+            </script>
+        </div>
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;" class="layui-bg-gray">
+                <div class="layui-row layui-col-space15">
+                    {% block body %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © 国网河北信通
+        </div>
+    </div>
+
+    <div id="window-msg" style="visibility: hidden">
+        <table id="app0" class="layui-table" border="1" rules="all">
+            <thead>
+                <th>发送人</th>
+                <th>发送时间</th>
+                <th>内容</th>
+                <th>已读</th>
+            </thead>
+            <tr v-for="message in messages">
+                <td>[{message.from_uid}]</td>
+                <td>[{message.msg_time}]</td>
+                <td>[{message.msg}]</td>
+                <td v-bind:id=message.id onclick="change_read(this)">
+                    <button style="background-color:#1E9FFF;" type="button" class="layui-btn layui-btn-normal"
+                        id="LAY-component-form-setval"><i class="fa fa-check-square"></i>已读
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+
+
+    <script>
+        function change_read(read) {
+            $.get("/restful/change_read/?read=" + read.id, function (result) {
+                layer.msg(result);
+            })
+        }
+
+        $(".layui-side-scroll i").css({ "font-size": "25px", "color": "#409EFF" });
+        $("dl i").css({ "font-size": "15px", "color": "#409EFF" });
+        layui.use(['element', 'form', 'laydate', 'layer'], function () {
+            var element = layui.element;
+            var layer = layui.layer;
+            var $ = layui.jquery
+                , upload = layui.upload
+                , layer = layui.layer;
+
+            var app0 = new Vue({
+                delimiters: ['[{', '}]'],
+                el: "#app0",
+                data: {
+                    messages: []
+                },
+                methods: {
+                    count() {
+                        $.get("/restful/message/dasset_user_messages/?count=ok", function (result) {
+                            var count = result[0].count;
+                            $(".layui-badge-rim").text(count)
+                            if (count > 0) {
+                                // layer.msg('您有' + count + '条新消息请注意查收');
+                            }
+                        });
+                    },
+                    msg() {
+                        $.get("/restful/message/dasset_user_messages/?message=ok", function (result) {
+                            var time = new Date();
+                            var date = time.Format('yyyy-MM-dd', result[0].msg_time);
+                            result[0].msg_time = date;
+                            app0.messages = result;
+
+                        });
+                    },
+                    role: function () {
+                        $.get("/restful/user_control/user_info/user_role/role/?where=" + $("#session_role").text(),
+                            function (data) { });
+                    }
+                }
+            });
+
+            $("#message").click(function () {
+                layer.open({
+                    type: 1,
+                    title: "添加新的表",
+                    area: ['70%', '70%'],
+                    content: $("#window-msg").html()
+                });
+            });
+            $(function () {
+                app0.role();
+                app0.count();
+                app0.msg();
+            })
+        });
+    </script>
+</body>
+
+</html>

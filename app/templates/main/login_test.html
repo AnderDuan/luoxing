@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)http://demo.cssmoban.com/cssthemes5/Login_Forms01/3_Green%20And%20Yellow%20Form/index.html -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>用户登陆</title>
+    <link rel="stylesheet" href="/static/css/layui.css">
+    <link rel="stylesheet" href="/static/css/normalize.min.css">
+    <link rel="stylesheet" href="/static/css/style_login.css">
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/axios.min.js"></script>
+</head>
+
+<body>
+
+    <!-- <form method="POST" action="/restful/login/"> -->
+    <div class="login" id='app'>
+        <div>
+            <div style="height:200px;width:100%;text-align: center;">
+                <!-- <img src="/static/images/topicPicture(11).png" width="100%"> -->
+                <i class="layui-icon layui-icon-user" style="font-size: 200px;text-align: center;"></i>
+            </div>
+        </div>
+        <div>
+            <!-- <h2>用户登陆</h2> -->
+            <br>
+            <form>
+                <fieldset>
+                    <input type="text" placeholder="请输入用户名" v-model='user_id' name='user_id'>
+                    <input type="password" placeholder="请输入密码" v-model='password' name='password'>
+                </fieldset>
+                <input id="login" type="submit" value="Log In" @click="login()">
+                <div class="utilities">
+                    <a href="#">Forgot Password?</a>
+                    <a href="#">Sign Up→</a>
+                </div>
+                <h5 v-if='isShow' style="color: red;">用户名或密码错误！</h5>
+            </form>
+        </div>
+    </div>
+
+    <!-- </form> -->
+</body>
+<script>
+    var app = new Vue({
+        el: "#app",
+        data: {
+            user_id: "",
+            password: "",
+            isShow: false
+        },
+        methods: {
+            login: function () {
+                // e.preventDefault();
+                // console.log(e);
+                var _this = this;
+                data = {
+                    'user_id': this.user_id,
+                    'password': this.password
+                };
+                headers = {
+                    'Content-type': 'application/x-www-form-urlencoded'
+                };
+                axios.post('/restful/login/', data, headers).
+                    then(function (res) {
+                        if (res.data == '登陆成功') {
+                            console.log(document.cookie);
+                            location.href = "/index/";
+                        } else {
+                            _this.isShow = true;
+                        }
+                    });
+                return false;
+            }
+        }
+    });
+    document.querySelector("#login").addEventListener("click", function (event) {
+        // document.getElementById("output-box").innerHTML += "Sorry! <code>preventDefault()</code> won't let you check this!<br>";
+        event.preventDefault();
+    }, false);
+</script>
+
+</html>

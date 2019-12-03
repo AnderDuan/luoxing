@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>数据资源目录登录</title>
+    <link href="/static/css/login.css" rel="stylesheet" type="text/css">
+    <script src="/static/js/jquery-1.12.4.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="login_box">
+        <div class="login_l_img"><img src="/static/images/login-img.png"></div>
+        <div class="login">
+            <div class="login_logo">
+                <a href="#"><img src="/static/images/login_logo.png"></a>
+            </div>
+            <div class="login_name">
+                <p>数据门户系统登录</p>
+            </div>
+            <form method="post">
+                <input id="user_id" name="user_id" type="text" placeholder="请输入用户名">
+                <input name="password" type="password" id="password" placeholder="请输入密码">
+                <input value="登录" style="width:100%;" type="submit" id='login' onclick="logon()">
+                <br>
+                <p id='error' style="color: red"></p>
+            </form>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="copyright" style="margin-top:150px;">国网河北信通公司</div>
+    </div>
+    <script>
+        document.querySelector("#login").addEventListener("click", function (event) {
+            event.preventDefault();
+        }, false);
+        function logon() {
+            var user_id = document.getElementById('user_id').value;
+            var password = document.getElementById('password').value;
+            var data = {
+                'user_id': user_id,
+                'password': password,
+            }
+            // data = JSON.stringify(data);
+            console.log(data);
+            $.post('/restful/login/', data, function (res) {
+                console.log(res);
+                if (res == '登陆成功') {
+                    location.href = "/";
+                } else {
+                    $('#error').html(res);
+                }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

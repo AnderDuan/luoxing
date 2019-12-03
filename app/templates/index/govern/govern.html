@@ -1,0 +1,63 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<div class="breadcrumb-area">
+	<div class="container">
+		<ol class="breadcrumb">
+			<li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+			<li class="active">数据治理</li>
+		</ol>
+	</div>
+</div>
+<style>
+	a:hover {
+		color: gray;
+	}
+</style>
+<div class="shop-area">
+	<div class="container" id="content">
+		<div class="row" style="overflow: auto;">
+			<table class="table table-striped" id='myTable'>
+				<thead>
+					<th style="width:10%">规则一级</th>
+					<th style="width:10%">规则二级</th>
+					<th style="width:10%">业务对象</th>
+					<th style="width:10%">数据对象</th>
+					<th style="width:10%">系统</th>
+					<th style="width:10%">规则名</th>
+					<th style="width:10%">规则详情</th>
+					<th style="width:14%">规则逻辑</th>
+					<!-- <th>problem_sql</th>
+					<th>total_sql</th> -->
+					<th style="width:8%">问题数</th>
+					<th style="width:8%">总数</th>
+				</thead>
+				<tbody>
+					{% for item in rules %}
+					<tr>
+						<td>{{item.rule_type_lv1}}</td>
+						<td>{{item.rule_type_lv2}}</td>
+						<td>{{item.business_object}}</td>
+						<td>{{item.data_object}}</td>
+						<td>{{item.business_system}}</td>
+						<td>{{item.rule_name}}</td>
+						<td>{{item.rule_desc}}</td>
+						<td>{{item.rule_logic}}</td>
+						<!-- <td>{{item.problem_sql}}</td>
+						<td>{{item.total_sql}}</td> -->
+						<td>{{item.problem_count}}</td>
+						<td>{{item.total_count}}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+<script>
+	$(document).ready(function () {
+		$('#myTable').DataTable();
+	});
+</script>
+{% endblock %}

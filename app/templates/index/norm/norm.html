@@ -1,0 +1,133 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<script>
+    function open_belong_tables(column_name) {
+        layer.open({
+            type: 2,
+            area: ['1000px', '450px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: '/norm/norm_tables/?column_name=' + column_name
+        });
+    }
+</script>
+<!-- breadcrumb start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">数据规范</li>
+        </ol>
+    </div>
+</div>
+<!-- breadcrumb end -->
+<!-- shop-area start -->
+<div class="shop-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-sm-8">
+                <h2 class="page-heading mt-40">
+                    <span class="cat-name">数据规范代码一览表</span>
+                </h2>
+                <div class="shop-page-bar">
+                    <div class="row">
+                        <div class="selector-field f-left ml-20" style="text-align: left;">
+                            <ul class="nav nav-pills">
+                                <li id="all"><a href="/norm/?model_name=all" style="font-size: 16px;">全部</a></li>
+                                {% for item in menu %}
+                                <li id="{{item.model_name}}">
+                                    <a href="/norm/?model_name={{item.model_name}}" style="font-size: 16px;">
+                                        {{item.model_name}}({{item.cnt}})</a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <script>
+                                $("#{{status.menu_select}}").addClass("active");
+                            </script>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="shop-bar selector-field white-bg">
+                            <style>
+                                .selector-field input {
+                                    display: inline;
+                                }
+                            </style>
+                            <table class="table table-striped" id="myTable">
+                                <thead>
+                                    <th style="width:10%">系统</th>
+                                    <th style="width:10%">域</th>
+                                    <th style="width:20%">字段名称</th>
+                                    <th style="width:60%">对应内容</th>
+                                </thead>
+                                <tbody>
+                                    {% for item in codes %}
+                                    <tr>
+                                        <td>{{item.simple_name}}</td>
+                                        <td>{{item.model_name}}</td>
+                                        <td style="word-wrap:break-word;word-break:break-all;">
+                                            <span onclick="open_belong_tables('{{item.class_code}}')"
+                                                title="点击查看涉及的数据表">
+                                                <ins style="color: blue;">{{item.class_code}}</ins>
+                                            </span>
+                                        </td>
+                                        <td style="word-wrap:break-word;word-break:break-all;">{{item.code_content}}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <script>
+                                $(document).ready(function () {
+                                    $('#myTable').DataTable();
+                                });
+                            </script>
+                        </div>
+                        <div class="content-sortpagibar" style="text-align: center;">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <h2 class="page-heading mt-40">
+                    <span class="cat-name">数据规范</span>
+                </h2>
+                <div class="column">
+                    <div class="sidebar-widget">
+                        <br>
+                        <br>
+                        <h3 class="sidebar-title">数据规范代码</h3>
+                        <ul class="sidebar-menu">
+                            <li><a href="/norm/">
+                                    全部 <span>(1924)</span></a></li>
+                            {% for item in menu[:3] %}
+                            <li><a href="/norm/?model_name={{item.model_name}}">
+                                    {{item.model_name}} <span>({{item.cnt}})</span></a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="sidebar-widget">
+                        <h3 class="sidebar-title">制度文件</h3>
+                        <ul class="sidebar-menu">
+                            <li><a href="/static/files/201712_guo_wang_shu_ju_zi_chan_guan_li_ban_fa.pdf">201712国网数据资产管理办法
+                                    <span></span></a></li>
+                            <li><a href="/static/files/DI_DAMA_DMBOK_zh_v302.pdf">DAMA数据管理白皮书
+                                    <span></span></a>
+                            </li>
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- shop-area end -->
+<script>
+    $("#myTabs a[href='#{{tab}}']").tab('show');
+    $('#cim_menu').css({ "display": "none" });
+</script>
+{% endblock %}

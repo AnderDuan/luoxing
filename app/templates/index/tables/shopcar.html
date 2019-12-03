@@ -1,0 +1,180 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/">首页</a>
+            </li>
+            <li class="active">数据使用申请</li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="shop-area">
+    <br>
+    <div class="container">
+        <div class="" id="app">
+            <div class="table-content table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">
+                                <div class="wc-proceed-to-checkout">
+                                    <a href="/cim/" style="margin:0px;">继续添加表</a>
+                                </div>
+                            </th>
+                            <!-- <th class="product-thumbnail" style="width: 30%;">Image</th> -->
+                            <th class="product-name">数据表</th>
+                            <th class="product-price">所属数据库</th>
+                            <th class="product-remove">删除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,index) in tables">
+                            <!-- <td>[{item.id}]</td> -->
+                            <td class="product-thumbnail">
+                                <a :href="'/tables/'+item.source_system+'/'+item.table_name+'/'">
+                                    <img src="/static/images/datasets/table5.png"
+                                        style="width:40%;height: 10%;"></a>
+                            </td>
+                            <td class="product-price" style="text-align: left;">
+                                <span class="amount">
+                                    <a :href="'/tables/'+item.source_system+'/'+item.table_name+'/'">
+                                        [{item.table_name}]</a></span>
+                            </td>
+                            <td class="product-price"><span class="amount">[{item.source_system}]</span></td>
+                            <td class="product-remove"><i class="fa fa-times" @click="delete_item(item.id)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- <form class="layui-form"> -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="coupon">
+                        <h3>申请原因</h3>
+                        <textarea placeholder="请填写申请原因" rows="7" v-model="apply_reason"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="coupon">
+                        <h3>申请内容</h3>
+                        <textarea type="text" placeholder="请详细填写具体申请的情况" rows="7" v-model="apply_content"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="cart_totals">
+                        <h2 style="display:block">选择审批人</h2>
+                        <table>
+                            <tbody>
+                                <tr class="order-total">
+                                    <td>
+                                        <strong>
+                                            <select v-model="approve_uid">
+                                                <option disabled>请选择</option>
+                                                <option v-for="item in approves" :value="item.user_id">
+                                                    [{item.user_name}]</option>
+                                            </select>
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="wc-proceed-to-checkout">
+                            <button class="btn btn-warning" style="height: 50px;margin-top: 15px;"
+                                @click="save();">确认申请</button>
+                            <!-- <a href="" @click="save();">确认申请</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+
+<script>
+    var app = new Vue({
+        delimiters: ['[{', '}]'],
+        el: '#app',
+        data: {
+            tables: [],
+            approve_uid: '请选择',
+            apply_reason: '',
+            apply_content: '',
+            approves: [],
+            user_id: "{{session['user_id']['user_id']}}"
+        },
+        methods: {
+            loadData: function () {
+                user_id = "{{session['user_id']['user_id']}}";
+                var _this = this;
+                $.get("/restful/shopcar/list/{{session['user_id']['user_id']}}/").then(function (result) {
+                    _this.tables = result;
+                    console.log(result);
+                });
+
+                $.get("/restful/shopcar/approve/").then(function (res) {
+                    console.log(res);
+                    _this.approves = res;
+                });
+            },
+            init: function () {
+                this.loadData();
+            },
+            delete_item: function (id) {
+                var _this = this;
+                if (confirm('请确认是否删除？')) {
+                    $.get('/restful/shopcar/delete_item/?id=' + id).then(function (res) {
+                        console.log(res);
+                        _this.loadData();
+                        header.showShopCar();
+                    });
+                }
+            },
+            save: function () {
+                data = {
+                    order_id: this.tables[0].order_id,
+                    approve_uid: this.approve_uid,
+                    apply_reason: this.apply_reason,
+                    apply_content: this.apply_content
+                };
+                if (data.approve_uid == '请选择') {
+                    alert("请选择审批人！");
+                    return
+                }
+                if (data.apply_reason == '') {
+                    alert("请填写申请原因");
+                    return
+                }
+                if (data.apply_content == '') {
+                    alert("请填写具体申请的内容");
+                    return
+                }
+                var _this = this;
+                $.get("/restful/shopcar/updateinfo/?data=" + JSON.stringify(data))
+                    .then(function (res) {
+                        alert("申请成功，请等待审批！")
+                        msg = {
+                            from_uid: _this.user_id,
+                            to_uid: _this.approve_uid,
+                            msg: '需要您审批'
+                        }
+                        $.get("/restful/messages/?query_type=create&msg=" + JSON.stringify(msg)).then(function (res) {
+                            console.log(res);
+                            location.href = '/index/';
+                        });
+                    });
+                // 添加消息
+            }
+        }
+    });
+    app.init();
+
+</script>
+
+
+{% endblock %}

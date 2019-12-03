@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>对应数据表</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+
+<body>
+    <table class="table table-bordered">
+        <tr>
+            <th>库名</th>
+            <th>表名</th>
+            <th>字段</th>
+            <th>字段含义</th>
+        </tr>
+        {% for item in tables %}
+        <tr>
+            <td>{{item.TABLE_SCHEMA}}</td>
+            <td>
+                <a target="_blank" href="/tables/{{item.TABLE_SCHEMA}}/{{item.TABLE_NAME}}/">{{item.TABLE_NAME}}</a>
+            </td>
+            <td>{{item.COLUMN_NAME}}</td>
+            <td style="word-wrap:break-all;">{{item.COLUMN_COMMENT}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>

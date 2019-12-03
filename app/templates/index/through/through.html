@@ -1,0 +1,166 @@
+{% extends 'index/base.html' %}
+{% block body %}
+
+<!-- breadcrumb start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">营配贯通</li>
+        </ol>
+    </div>
+</div>
+<!-- breadcrumb end -->
+<!-- shop-area start -->
+<div class="shop-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-sm-4">
+                <div class="column mt-55">
+                    <h2 class="title-block">业务流程</h2>
+                    <div class="sidebar-widget" style="overflow-x: auto;max-height: 600px;">
+                        <ul class="sidebar-menu">
+                            {% for item in menu %}
+                            <li><a href="/through/?process={{item.process_name}}">
+                                    <img src="/static/images/menu-l/{{range(1,13)|random()}}.png" alt="" />
+                                    {{item.process_name}}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-8">
+                <h2 class="page-heading mt-40">
+                    <span class="cat-name">{{status}}
+                    </span>
+                    <span class="heading-counter">
+                        <ul class="shop-tab f-left" role="tablist" id='myTabs'>
+                            <li role="presentation" class="active">
+                                <a href="#home" data-toggle="tab" aria-expanded="true">
+                                    <i class="fa fa-th-list" aria-hidden="true"></i></a>
+                            </li>
+                            <li role="presentation" class="">
+                                <a href="#mix" data-toggle="tab" aria-expanded="false">
+                                    <i class="fa fa-th-large" aria-hidden="true"></i></a>
+                            </li>
+                        </ul>
+                    </span>
+                </h2>
+                <div class="shop-page-bar">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <div class="layui-collapse">
+                                {% for item in process_tables %}
+                                <div class="layui-colla-item">
+                                    <h2 class="layui-colla-title">{{item}}</h2>
+                                    <div class="layui-colla-content">
+                                        <div class="row">
+                                            {% for table in process_tables[item] %}
+                                            <div class="col-sm-3">
+                                                <div class="single-product mb-20 white-bg">
+                                                    <div class="product-img pt-20 pb-20" style="text-align: center;">
+                                                        <div id="{{table.table_name}}">
+                                                            <a target="_blank" {% if table.table_name %}
+                                                                href="/tables/{{table.source_system}}/{{table.table_name}}/"
+                                                                {% endif %}>
+                                                                <img style="height: 120px;width:70%;"
+                                                                    src="/static/images/electronic2/{{range(1,13)|random()}}.png"
+                                                                    title="{{table.table_desc}}">
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-content product-i">
+                                                        <div class="pro-title">
+                                                            <h4><span class="glyphicon glyphicon-briefcase"></span>
+                                                                <a title="{{table.table_name_ch}}" target="_blank"
+                                                                    {% if table.table_name %}
+                                                                    href="/tables/{{table.source_system}}/{{table.table_name}}/"
+                                                                    {% endif %}>
+                                                                    {% if (table.table_name_ch or "无") |length() < 8 %}
+                                                                    {{table.table_name_ch or "此表暂无数据"}}
+                                                                    {% else %}
+                                                                    {{table.table_name_ch[:8]}}..
+                                                                    {% endif %}
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="pro-rating ">
+                                                            <span class="glyphicon glyphicon-filter"></span>
+                                                            表类型：{{table.table_norm or "无"}}
+                                                        </div>
+                                                        <div class="pro-rating ">
+                                                            <span class="glyphicon glyphicon-filter"></span>
+                                                            所属系统：{{table.system or "无"}}
+                                                        </div>
+                                                        <div class="price-box" style="height: 40px;">
+                                                            <span title="{{table.table_name}}"
+                                                                class="price product-price">
+                                                                <span class="glyphicon glyphicon-dashboard"></span>
+                                                                {% if (table.table_name or "无") |length() < 10 %}
+                                                                {{table.table_name or "此表暂无数据"}}
+                                                                {% else %}
+                                                                {{table.table_name[:10]}}..
+                                                                {% endif %}
+                                                            </span>
+                                                        </div>
+                                                        <div class="product-icon">
+                                                            <div class="product-icon-left f-left">
+                                                                <a target="_blank" {% if table.table_name %}
+                                                                    href="/tables/{{table.source_system}}/{{table.table_name}}/"
+                                                                    {% endif %}>
+                                                                    <i class="fa fa-shopping-cart"></i>查看详情
+                                                                </a>
+                                                            </div>
+                                                            <div class="product-icon-right floatright">
+                                                                <!-- <a target="_blank"
+                                                                    href="/tables/{{table.source_system}}/{{table.table_name}}/"
+                                                                    data-toggle="tooltip" title="比较">
+                                                                    <i class="fa fa-exchange"></i></a> -->
+                                                                <a target="_blank" {% if table.table_name %}
+                                                                    href="/tables/{{table.source_system}}/{{table.table_name}}/"
+                                                                    {% endif %}
+                                                                    data-toggle="tooltip" title="添加申请">
+                                                                    <i class="fa fa-heart"></i></a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="mix">
+                            <img src="{{image.image_url}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                layui.use('element', function () {
+                    var element = layui.element;
+
+                    //…
+                });
+            </script>
+        </div>
+    </div>
+    <br><br><br>
+</div>
+
+<style>
+    .cat-name{
+        /* font-size: 100px;
+        color: red; */
+        /* width: 100px;
+        height: 100px;
+        background-color: red; */
+    }
+</style>
+<!-- shop-area end -->
+
+{% endblock %}

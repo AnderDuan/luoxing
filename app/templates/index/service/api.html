@@ -1,0 +1,123 @@
+{% extends 'index/base.html' %}
+{% block body %}
+<div class="breadcrumb-area">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/index/"><i class="fa fa-home"></i> Home</a></li>
+            <li class="active">Data API</li>
+        </ol>
+    </div>
+</div>
+<div class="shop-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="shop-page-bar">
+                    <div>
+                        <div class="shop-bar" style="margin-bottom: 0px;padding-bottom:0px;">
+                            <table class="table">
+                                <tr>
+                                    <td style="width: 10%;">
+                                        <div class="selector-field f-left ml-20">
+                                            <label>API类型</label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="selector-field f-left ml-20" style="text-align: left;">
+                                            <ul class="nav nav-pills">
+                                                {% for item in api_type_list %}
+                                                <li id="{{item.type}}">
+                                                    <a href="/api/?api_type={{item.type}}" style="font-size: 16px;">
+                                                        {{item.type}}</a></li>
+                                                {% endfor %}
+                                            </ul>
+                                            <script>
+                                                $("#{{api_type}}").addClass("active");
+                                            </script>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <div class="row">
+                                {% for item in apis %}
+                                <div class="col-lg-3 col-md-3 col-sm-4">
+                                    <div class="single-product mb-30  white-bg">
+                                        <div class="product-img pt-20" style="text-align: center;">
+                                            <a href="/api_detail/?id={{item.id}}" style="width:80%">
+                                                <img src="/static/images/learn_tools/z{{ range(1,10)|random() }}.png"
+                                                    style="width:80%;height:150px;" />
+                                            </a>
+                                        </div>
+                                        <div class="product-content product-i">
+                                            <div class="pro-title">
+                                                <h4><a href="/api_detail/?id={{item.id}}">{{item.api_name}}</a></h4>
+                                            </div>
+                                            <div class="pro-rating ">
+                                                {% for i in range(range(1,6)| random())%}
+                                                <a href="#"><i class="fa fa-star"></i></a>
+                                                {% endfor %}
+                                            </div>
+
+                                            <div class="price-box">
+                                                <span class="price product-price">{{item.api_name_desc}}</span>
+                                            </div>
+                                            <div class="product-icon">
+                                                <div class="product-icon-left f-left">
+                                                    <a href="#">
+                                                        <i class="fa fa-shopping-cart"></i>查看详情
+                                                    </a>
+                                                </div>
+                                                <div class="product-icon-right floatright">
+                                                    <a href="#" data-toggle="tooltip" title="Compare">
+                                                        <i class="fa fa-exchange"></i></a>
+                                                    <a href="#" data-toggle="tooltip" title="Wishlist">
+                                                        <i class="fa fa-heart"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="content-sortpagibar" style="text-align: center;">
+                                <!-- <div class="product-count display-inline">Showing 1 - 12 of 13 items</div> -->
+                                <ul class="shop-pagi selector-field display-inline">
+                                    <label>请选择页码</label>
+                                    <li><a href="/api/?api_type={{api_type}}&page={{page-1}}">
+                                            <i class="fa fa-angle-left"></i></a>
+                                    </li>
+                                    <li>
+                                        <select id="page" class="selector-field">
+                                            {% for i in range(1,count+1) %}
+                                            <option>{{i}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <script>
+                                            $('#page').val('{{page}}');
+                                            $('#page').change(
+                                                function () {
+                                                    location.href = '/api/?api_type={{api_type}}&&page=' + $('#page').val();
+                                                }
+                                            );
+                                        </script>
+                                    </li>
+                                    <li><a href="/api/?api_type={{api_type}}&page={{page+1}}">
+                                            <i class="fa fa-angle-right"></i></a>
+                                    </li>
+                                    &nbsp;<label> 共{{count}}页</label>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
